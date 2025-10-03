@@ -18,13 +18,13 @@ export const getAllAccount =createAsyncThunk("getAllAccount" ,async () => {
 const account  = createSlice({
     name:"account",
     initialState:{
-        users : User
+        users : []
     },
     reducers:{},
     extraReducers:(builder) => {
         builder
-        .addCase(getAllAccount.fulfilled,(state:any , action) => {
-            return state
+        .addCase(getAllAccount.fulfilled,(state , action) => {
+            return state.users = action.payload
         })
     }
 })
