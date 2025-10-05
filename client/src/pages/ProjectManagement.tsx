@@ -1,25 +1,36 @@
-import React, { useState } from "react";
+import  { useEffect, useState } from "react";
 import AddAndEditProject from "../components/AddAndEditProject";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import DeleteProject from "../components/DeleteProject";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllData } from "../store/slices/managementSlice";
+import type { Project } from "../utils/type";
 
 
 export default function ProjectManagement() {
-  const projects = [
-    { id: 1, name: "Xây dựng website thương mại điện tử" },
-    { id: 2, name: "Phát triển ứng dụng di động" },
-    { id: 3, name: "Quản lý dữ liệu khách hàng" },
-    { id: 4, name: "Xây dựng website thương mại điện tử" },
-    { id: 5, name: "Phát triển ứng dụng di động" },
-    { id: 6, name: "Quản lý dữ liệu khách hàng" },
-    { id: 7, name: "Xây dựng website thương mại điện tử" },
-    { id: 8, name: "Phát triển ứng dụng di động" },
-    
-  ];
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [edit, setEdit] = useState(null)
+
 
   const navi = useNavigate();
+  const dispatch :any = useDispatch();
+  // lấy data 
+  const projects = useSelector((data:any) =>{
+    console.log("data : " , data.management);
+    return data.management.project
+  })
+  useEffect(() =>{
+    dispatch(getAllData());
+  },[])
+
+  //sua
+  const handleEdit = (p : any) => {
+    setEdit(p);
+    setIsOpen(true);
+  }
+
+
 
   return (
     <>
@@ -57,18 +68,18 @@ export default function ProjectManagement() {
               </tr>
             </thead>
             <tbody>
-              {projects.map((p) => (
-                <tr key={p.id} className="border-t border-gray-300">
+              {projects.map((p : Project , i : number) => (
+                <tr key={i} className="border-t border-gray-300">
                   <td className="px-4 py-2 border-r border-gray-300 text-center">
-                    {p.id}
+                    {i + 1}
                   </td>
                   <td className="px-4 py-2 border-r border-gray-300">
-                    {p.name}
+                    {p.projectName}
                   </td>
                   <td className="px-4 py-2 flex justify-center space-x-2">
                     <button
                       className="bg-yellow-400 text-black px-3 py-1 rounded w-20 hover:bg-yellow-500"
-                      onClick={() => setIsOpen(true)}
+                      onClick={() => handleEdit(p)}
                     >
                       Sửa
                     </button>
@@ -108,6 +119,7 @@ export default function ProjectManagement() {
         <AddAndEditProject
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
+          edit={edit}
         ></AddAndEditProject>
         <DeleteProject
           isOpen={isDeleteOpen}

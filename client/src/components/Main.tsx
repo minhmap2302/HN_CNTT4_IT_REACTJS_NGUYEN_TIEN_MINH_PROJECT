@@ -30,6 +30,10 @@ export default function Main() {
           element:<ProjectDetail></ProjectDetail>
         }
       ]
+    },
+    {
+      path:"/detail",
+      element:<ProjectDetail></ProjectDetail>
     }
   ])
 

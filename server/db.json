@@ -5,6 +5,18 @@
       "fullName": "An Nguyen",
       "email": "annguyen@gmail.com",
       "password": "123456"
+    },
+    {
+      "fullName": "Dương Đức Lộc ",
+      "email": "axyz09527@gmail.com",
+      "password": "12345678",
+      "id": 2
+    },
+    {
+      "fullName": "Dương Đức Lộc ",
+      "email": "locduong25051006@gmail.com",
+      "password": "12345678",
+      "id": 3
     }
   ],
   "task": [
@@ -23,8 +35,9 @@
   "project": [
     {
       "id": 1,
-      "projectName": "Xây dựng website thương mại điện tử",
+      "projectName": "Xây dựng website thương mại điện tử 1",
       "image": "https://res.cloudinary.com/des6fq9th/image/upload/v1758845173/cld-sample-5.jpg",
+      "note": "Dự án nhằm phát triển một nền tảng thương mại điện tử với các tính năng như giỏ hàng, thanh toán và quản lý sản phẩm.",
       "members": [
         {
           "userId": 1,
@@ -35,6 +48,45 @@
           "role": "Frontend developer"
         }
       ]
+    },
+    {
+      "id": 2,
+      "projectName": "Xây dựng website thương mại điện tử 2",
+      "image": "https://res.cloudinary.com/des6fq9th/image/upload/v1758845173/cld-sample-5.jpg",
+      "note": "Dự án nhằm phát triển một nền tảng thương mại điện tử với các tính năng như giỏ hàng, thanh toán và quản lý sản phẩm.",
+      "members": [
+        {
+          "userId": 1,
+          "role": "Project owner"
+        },
+        {
+          "userId": 2,
+          "role": "Frontend developer"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "projectName": "Xây dựng website thương mại điện tử 3",
+      "image": "https://res.cloudinary.com/des6fq9th/image/upload/v1758845173/cld-sample-5.jpg",
+      "note": "Dự án nhằm phát triển một nền tảng thương mại điện tử với các tính năng như giỏ hàng, thanh toán và quản lý sản phẩm.",
+      "members": [
+        {
+          "userId": 1,
+          "role": "Project owner"
+        },
+        {
+          "userId": 2,
+          "role": "Frontend developer"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "projectName": "aa211111",
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1759673841/uubd94cdov35sao7zy3k.png",
+      "note": "a",
+      "members": []
     }
   ]
 }

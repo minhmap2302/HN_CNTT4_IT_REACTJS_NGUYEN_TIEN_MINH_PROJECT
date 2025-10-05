@@ -1,6 +1,7 @@
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import type { User } from "../../utils/type";
 
 
 // lay thong tin account
@@ -11,7 +12,18 @@ export const getAllAccount =createAsyncThunk("getAllAccount" ,async () => {
     } catch (error) {
         console.log(error);
     }
-} ) 
+})
+// hàm thêm (đăng kí user )
+
+export const addUser = createAsyncThunk("addUser" , async (newUser:User) => {
+    try {
+        const res = await axios.post("http://localhost:8080/user",newUser)
+        return res.data
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 
 
@@ -24,7 +36,11 @@ const account  = createSlice({
     extraReducers:(builder) => {
         builder
         .addCase(getAllAccount.fulfilled,(state , action) => {
-            return state.users = action.payload
+            state.users = action.payload
+        })
+        .addCase(addUser.fulfilled,(state,action) => {
+            console.log("them thanh cong", action.payload);
+            state.users.push(action.payload);
         })
     }
 })

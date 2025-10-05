@@ -1,11 +1,11 @@
-export interface User {
+export type User = {
     id : number;
     fullName : string;
     email:string,
     password:string
 }
 
-export interface Task {
+export type Task =  {
     id:number;
     taskName:string;
     assigneeId:number,
@@ -16,10 +16,11 @@ export interface Task {
     status:string
 }
 
-export interface Project{
+export type Project = {
     id:number,
     projectName:string,
     image:string,
+    note:string,
     members:[
         {
             userId:number,
