@@ -66,14 +66,15 @@ export default function AddAndEditProject({
       setError("Không được để trống");
       return;
     }
-    const newproject = {
+    
+    if (edit) {
+      const newproject = {
       id: edit.id,
       projectName: nameProject,
       image: url,
       note: note,
       members: [],
     };
-    if (edit) {
       dispatch(editProject(newproject))
       Swal.fire({
         position: "top",
@@ -90,6 +91,12 @@ export default function AddAndEditProject({
       });
       
     } else {
+      const newproject = {
+      projectName: nameProject,
+      image: url,
+      note: note,
+      members: [],
+    };
       dispatch(addProject(newproject));
       Swal.fire({
         position: "top",
@@ -110,7 +117,7 @@ export default function AddAndEditProject({
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
       <div className="bg-white w-full max-w-md rounded shadow-lg p-6 relative">
-        {/* Header */}
+      
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Thêm/sửa dự án</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-black">
@@ -118,9 +125,9 @@ export default function AddAndEditProject({
           </button>
         </div>
 
-        {/* Form */}
+       
         <div className="space-y-4">
-          {/* Tên dự án */}
+        
           <div>
             <label className="block text-sm font-medium mb-1">Tên dự án</label>
             <input
@@ -135,7 +142,7 @@ export default function AddAndEditProject({
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
-          {/* Hình ảnh dự án */}
+          
           <div>
             <label className="block text-sm font-medium mb-1">
               Hình ảnh dự án
@@ -148,9 +155,12 @@ export default function AddAndEditProject({
               onChange={handleInputImage}
             />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            <div className="w-30">
+              <img src={url} alt="" />
+            </div>
           </div>
 
-          {/* Mô tả dự án */}
+        
           <div>
             <label className="block text-sm font-medium mb-1">
               Mô tả dự án

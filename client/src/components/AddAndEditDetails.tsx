@@ -78,13 +78,12 @@ export default function AddAndEditDetails({isOpen , onClose} : PropsAddandEdit) 
 
           {/* Tiến độ */}
           <div>
-            <label className="block mb-1 font-medium">Tiến độ (%)</label>
-            <input
-              type="number"
-              className="w-full border rounded px-3 py-2"
-              min={0}
-              max={100}
-            />
+            <label className="block mb-1 font-medium">Tiến độ</label>
+            <select className="w-full border rounded px-3 py-2">
+              <option>Đúng tiến độ</option>
+              <option>Có rủi ro</option>
+              <option>Chậm tiến độ</option>
+            </select>
           </div>
         </div>
 

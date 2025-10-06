@@ -1,10 +1,18 @@
+import { useDispatch } from "react-redux";
+import { deleteProject } from "../store/slices/managementSlice";
+
 interface DeleteProjectProps {
   isOpen: boolean;
   onClose: () => void;
+  deleteProject2 : any
 }
-export default function DeleteProject({ isOpen, onClose }: DeleteProjectProps) {
+export default function DeleteProject({ isOpen, onClose , deleteProject2 }: DeleteProjectProps) {
+  const dispatch = useDispatch();
   if (!isOpen) return null;
-
+  const handleDelete = () => {
+    dispatch(deleteProject(deleteProject2));
+    onClose();
+  }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       <div className="bg-white rounded-lg shadow-lg w-[400px] animate-fadeIn">
@@ -29,7 +37,9 @@ export default function DeleteProject({ isOpen, onClose }: DeleteProjectProps) {
           >
             Hủy
           </button>
-          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
+          <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            onClick={handleDelete}
+          >
             Xoá
           </button>
         </div>

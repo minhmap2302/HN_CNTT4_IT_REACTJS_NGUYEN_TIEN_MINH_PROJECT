@@ -11,8 +11,8 @@ export default function ProjectManagement() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [edit, setEdit] = useState(null)
-
-
+  const [searchInput, setSearchInput] = useState("")
+  const [deleteProject, setDeleteProject] = useState<number>()
   const navi = useNavigate();
   const dispatch :any = useDispatch();
   // lấy data 
@@ -29,15 +29,18 @@ export default function ProjectManagement() {
     setEdit(p);
     setIsOpen(true);
   }
-
-
+  // tim kiem 
+  const searchJob = projects.filter((i:any) => i.projectName.toLowerCase().includes(searchInput.toLowerCase()))
+  // xoa
+  const handleDelete = (id:number) => {
+    setIsDeleteOpen(true);
+    setDeleteProject(id);
+  }
 
   return (
     <>
       <div className="p-6 flex flex-col items-center">
-        {/* Khung trắng */}
         <div className="w-full max-w-6xl bg-white shadow rounded p-6">
-          {/* Header: Tiêu đề + Nút + Tìm kiếm */}
           <div className="flex flex-col mb-6 gap-[30px]">
             <h2 className="text-xl font-semibold">Quản Lý Dự Án Nhóm</h2>
             <div className="flex space-x-4 justify-between">
@@ -51,11 +54,10 @@ export default function ProjectManagement() {
                 type="text"
                 placeholder="Tìm kiếm dự án"
                 className="border border-gray-300 rounded px-3 py-2 w-120 focus:outline-none focus:ring focus:ring-blue-300"
+                onChange={(e) => setSearchInput(e.target.value)}
               />
             </div>
           </div>
-
-          {/* Danh sách dự án */}
           <h3 className="text-lg font-semibold mb-2">Danh Sách Dự Án</h3>
           <table className="w-full border border-gray-300 rounded overflow-hidden">
             <thead>
@@ -68,7 +70,7 @@ export default function ProjectManagement() {
               </tr>
             </thead>
             <tbody>
-              {projects.map((p : Project , i : number) => (
+              {searchJob.length > 0 ? (searchJob.map((p : Project , i : number) => (
                 <tr key={i} className="border-t border-gray-300">
                   <td className="px-4 py-2 border-r border-gray-300 text-center">
                     {i + 1}
@@ -85,7 +87,7 @@ export default function ProjectManagement() {
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded w-20 hover:bg-red-600"
-                      onClick={() => setIsDeleteOpen(true)}
+                      onClick={() => handleDelete(p.id)}
                     >
                       Xóa
                     </button>
@@ -97,7 +99,10 @@ export default function ProjectManagement() {
                     </button>
                   </td>
                 </tr>
-              ))}
+              ))) :
+                ""
+              }
+              
             </tbody>
           </table>
         </div>
@@ -124,9 +129,9 @@ export default function ProjectManagement() {
         <DeleteProject
           isOpen={isDeleteOpen}
           onClose={() => setIsDeleteOpen(false)}
+          deleteProject2={deleteProject}
         ></DeleteProject>
       </div>
-      {/* <Outlet></Outlet> */}
     </>
   );
 }

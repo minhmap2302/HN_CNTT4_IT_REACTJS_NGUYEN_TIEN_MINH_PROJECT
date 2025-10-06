@@ -34,6 +34,17 @@ export const editProject = createAsyncThunk("editProject" , async (p : any) => {
     }
 })
 
+// ham xoa
+
+export const deleteProject = createAsyncThunk("deleteProject" , async (id : number) => {
+    try {
+        const res = await axios.delete(`http://localhost:8080/project/${id}`);
+        return id;
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 const managementSlice = createSlice({
     name:"management",
     initialState:{
@@ -44,7 +55,7 @@ const managementSlice = createSlice({
         builder
         .addCase(getAllData.fulfilled,(state,action) => {
             console.log("lấy thành công data Slice : " , action.payload);
-            state.project = action.payload
+             state.project = action.payload
         })
         .addCase(addProject.fulfilled,(state,action) => {
             console.log(action.payload);
@@ -53,7 +64,11 @@ const managementSlice = createSlice({
         })
         .addCase(editProject.fulfilled,(state,action)=>{
             const index = state.project.findIndex((i:any) => i.id === action.payload.id);
-             state.project[index] = action.payload
+            state.project[index] = action.payload
+        })
+        .addCase(deleteProject.fulfilled, (state,action) => {
+            console.log("xoa thanh cong");
+            state.project = state.project.filter((i:any) => i.id !== action.payload);
         })
     }
 })
