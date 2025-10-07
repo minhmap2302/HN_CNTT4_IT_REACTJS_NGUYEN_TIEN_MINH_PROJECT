@@ -44,7 +44,7 @@ export default function Register() {
     }
     const findEmail = getData.findIndex((i: User) => i.email === email);
     if (findEmail != -1) {
-      setEmailError("Email đã được đăng kí");
+      setEmailError("Email đã tồn tại");
       return;
     }
     if (password.length < 8) {
@@ -94,6 +94,12 @@ export default function Register() {
                     nameError ? "border-red-500" : "border-gray-200"
                   }`}
                   onChange={(e) => setName(e.target.value)}
+                  onClick={() => {
+                    setConfirmPassError("");
+                    setEmailError("");
+                    setNameError("");
+                    setPasswordError("")
+                  }}
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -103,12 +109,18 @@ export default function Register() {
               <div>
                 <input
                   name="email"
-                  type="email"
+                  // type="email"
                   placeholder="Địa chỉ email"
                   className={`w-full px-4 py-3 rounded-lg border text-center focus:outline-none focus:ring-2 focus:ring-blue-300 ${
                     emailError ? "border-red-500" : "border-gray-200"
                   }`}
                   onChange={(e) => setEmail(e.target.value)}
+                  onClick={() => {
+                    setConfirmPassError("");
+                    setEmailError("");
+                    setNameError("");
+                    setPasswordError("")
+                  }}
                 />
                 {emailError && (
                   <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -124,6 +136,12 @@ export default function Register() {
                     passwordError ? "border-red-500" : "border-gray-200"
                   }`}
                   onChange={(e) => setPassword(e.target.value)}
+                  onClick={() => {
+                    setConfirmPassError("");
+                    setEmailError("");
+                    setNameError("");
+                    setPasswordError("")
+                  }}
                 />
                 {passwordError && (
                   <p className="text-red-500 text-sm mt-1">{passwordError}</p>
@@ -139,6 +157,12 @@ export default function Register() {
                     confirmPassError ? "border-red-500" : "border-gray-200"
                   }`}
                   onChange={(e) => setConfirmPass(e.target.value)}
+                  onClick={() => {
+                    setConfirmPassError("");
+                    setEmailError("");
+                    setNameError("");
+                    setPasswordError("")
+                  }}
                 />
                 {confirmPassError && (
                   <p className="text-red-500 text-sm mt-1">

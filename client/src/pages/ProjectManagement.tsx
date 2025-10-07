@@ -1,83 +1,78 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AddAndEditProject from "../components/AddAndEditProject";
-import { useNavigate } from "react-router-dom";
 import DeleteProject from "../components/DeleteProject";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllData } from "../store/slices/managementSlice";
 import type { Project } from "../utils/type";
 
-
 export default function ProjectManagement() {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [edit, setEdit] = useState(null)
-  const [searchInput, setSearchInput] = useState("")
-  const [deleteProject, setDeleteProject] = useState<number>()
+  const [edit, setEdit] = useState<Project | null>(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [deleteProject, setDeleteProject] = useState<number>();
   const navi = useNavigate();
-  const dispatch :any = useDispatch();
-  // lấy data 
-  const projects = useSelector((data:any) =>{
-    console.log("data : " , data.management);
-    return data.management.project
-  })
-  useEffect(() =>{
-    dispatch(getAllData());
-  },[])
+  const dispatch: any = useDispatch();
 
-  //sua
-  const handleEdit = (p : any) => {
+  const projects: Project[] = useSelector((state: any) => state.management.project || []);
+
+  useEffect(() => {
+    dispatch(getAllData());
+  }, [dispatch]);
+
+  const handleEdit = (p: Project) => {
     setEdit(p);
+    console.log(p);
     setIsOpen(true);
-  }
-  // tim kiem 
-  const searchJob = projects.filter((i:any) => i.projectName.toLowerCase().includes(searchInput.toLowerCase()))
-  // xoa
-  const handleDelete = (id:number) => {
+  };
+
+  const handleDelete = (id: number) => {
     setIsDeleteOpen(true);
     setDeleteProject(id);
-  }
+  };
+
+  const searchJob = projects.filter((p) =>
+    p.projectName?.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
-    <>
-      <div className="p-6 flex flex-col items-center">
-        <div className="w-full max-w-6xl bg-white shadow rounded p-6">
-          <div className="flex flex-col mb-6 gap-[30px]">
-            <h2 className="text-xl font-semibold">Quản Lý Dự Án Nhóm</h2>
-            <div className="flex space-x-4 justify-between">
-              <button
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                onClick={() => setIsOpen(true)}
-              >
-                + Thêm Dự Án
-              </button>
-              <input
-                type="text"
-                placeholder="Tìm kiếm dự án"
-                className="border border-gray-300 rounded px-3 py-2 w-120 focus:outline-none focus:ring focus:ring-blue-300"
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-            </div>
+    <div className="p-6 flex flex-col items-center">
+      <div className="w-full max-w-6xl bg-white shadow rounded p-6">
+        <div className="flex flex-col mb-6 gap-[30px]">
+          <h2 className="text-xl font-semibold">Quản Lý Dự Án Nhóm</h2>
+          <div className="flex space-x-4 justify-between">
+            <button
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              onClick={() => {setIsOpen(true)
+                setEdit(null)
+              }}
+            >
+              + Thêm Dự Án
+            </button>
+            <input
+              type="text"
+              placeholder="Tìm kiếm dự án"
+              className="border border-gray-300 rounded px-3 py-2 w-120 focus:outline-none focus:ring focus:ring-blue-300"
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Danh Sách Dự Án</h3>
-          <table className="w-full border border-gray-300 rounded overflow-hidden">
-            <thead>
-              <tr className="bg-gray-800 text-white">
-                <th className="px-4 py-2 w-16 border-r border-gray-300">ID</th>
-                <th className="px-4 py-2 border-r border-gray-300 text-left">
-                  Tên Dự Án
-                </th>
-                <th className="px-4 py-2 w-60 text-center">Hành Động</th>
-              </tr>
-            </thead>
-            <tbody>
-              {searchJob.length > 0 ? (searchJob.map((p : Project , i : number) => (
-                <tr key={i} className="border-t border-gray-300">
-                  <td className="px-4 py-2 border-r border-gray-300 text-center">
-                    {i + 1}
-                  </td>
-                  <td className="px-4 py-2 border-r border-gray-300">
-                    {p.projectName}
-                  </td>
+        </div>
+        <h3 className="text-lg font-semibold mb-2">Danh Sách Dự Án</h3>
+        <table className="w-full border border-gray-300 rounded overflow-hidden">
+          <thead>
+            <tr className="bg-gray-800 text-white">
+              <th className="px-4 py-2 w-16 border-r border-gray-300">ID</th>
+              <th className="px-4 py-2 border-r border-gray-300 text-left">Tên Dự Án</th>
+              <th className="px-4 py-2 w-60 text-center">Hành Động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {searchJob.length > 0 ? (
+              searchJob.map((p, i) => (
+                <tr key={p.id || i} className="border-t border-gray-300">
+                  <td className="px-4 py-2 text-center">{i + 1}</td>
+                  <td className="px-4 py-2">{p.projectName}</td>
                   <td className="px-4 py-2 flex justify-center space-x-2">
                     <button
                       className="bg-yellow-400 text-black px-3 py-1 rounded w-20 hover:bg-yellow-500"
@@ -93,45 +88,34 @@ export default function ProjectManagement() {
                     </button>
                     <button
                       className="bg-blue-500 text-white px-3 py-1 rounded w-20 hover:bg-blue-600"
-                      onClick={() => {navi(`/management/${p.id}`)}}
+                      onClick={() => navi(`/management/${p.id}`)}
                     >
                       Chi tiết
                     </button>
                   </td>
                 </tr>
-              ))) :
-                ""
-              }
-              
-            </tbody>
-          </table>
-        </div>
-
-        {/* Phân trang ở ngoài khung trắng */}
-        <div className="flex justify-center items-center space-x-1 mt-6">
-          <button className="px-3 py-1 border border-gray-300 rounded-l text-gray-400 bg-gray-100">
-            ‹
-          </button>
-          <button className="px-3 py-1 border border-gray-300 bg-blue-500 text-white">
-            1
-          </button>
-          <button className="px-3 py-1 border border-gray-300">2</button>
-          <button className="px-3 py-1 border border-gray-300">3</button>
-          <button className="px-3 py-1 border border-gray-300 rounded-r bg-gray-100">
-            ›
-          </button>
-        </div>
-        <AddAndEditProject
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          edit={edit}
-        ></AddAndEditProject>
-        <DeleteProject
-          isOpen={isDeleteOpen}
-          onClose={() => setIsDeleteOpen(false)}
-          deleteProject2={deleteProject}
-        ></DeleteProject>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={3} className="text-center py-4 text-gray-500">
+                  Không tìm thấy dự án nào
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
-    </>
+
+      <div className="flex justify-center items-center space-x-1 mt-6">
+        <button className="px-3 py-1 border border-gray-300 rounded-l text-gray-400 bg-gray-100">‹</button>
+        <button className="px-3 py-1 border border-gray-300 bg-blue-500 text-white">1</button>
+        <button className="px-3 py-1 border border-gray-300">2</button>
+        <button className="px-3 py-1 border border-gray-300">3</button>
+        <button className="px-3 py-1 border border-gray-300 rounded-r bg-gray-100">›</button>
+      </div>
+
+      <AddAndEditProject isOpen={isOpen} onClose={() => setIsOpen(false)} edit={edit} />
+      <DeleteProject isOpen={isDeleteOpen} onClose={() => setIsDeleteOpen(false)} deleteProject2={deleteProject} />
+    </div>
   );
 }

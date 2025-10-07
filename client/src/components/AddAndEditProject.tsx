@@ -3,11 +3,12 @@ import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
 import { addProject, editProject } from "../store/slices/managementSlice";
 import axios from "axios";
+import type { Project } from "../utils/type";
 
 interface AddAndEditProjectProps {
   isOpen: boolean;
   onClose: () => void;
-  edit: any;
+  edit: Project | null;
 }
 
 export default function AddAndEditProject({
@@ -15,20 +16,20 @@ export default function AddAndEditProject({
   onClose,
   edit,
 }: AddAndEditProjectProps) {
-  if (!isOpen) return null;
-
   const [nameProject, setNameProject] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [note, setNote] = useState("");
   const [url, setUrl] = useState<string>("");
-
   const [error, setError] = useState("");
 
+  const dispatch: any = useDispatch();
+
+  // ✅ Cập nhật dữ liệu khi "edit" thay đổi
   useEffect(() => {
-    if (edit) {
-      setNameProject(edit.projectName);
-      setUrl(edit.image);
-      setNote(edit.note);
+    if (edit && typeof edit === "object") {
+      setNameProject(edit.projectName || "");
+      setUrl(edit.image || "");
+      setNote(edit.note || "");
     } else {
       setNameProject("");
       setImage(null);
@@ -53,29 +54,28 @@ export default function AddAndEditProject({
         "https://api.cloudinary.com/v1_1/di8bnnkmd/image/upload",
         formData
       );
-      console.log("Upload thành công:", response.data);
       setUrl(response.data.secure_url);
     } catch (error) {
       console.error("Lỗi upload:", error);
     }
   };
 
-  const dispatch: any = useDispatch();
   const handleAddProject = () => {
     if (!nameProject || !url) {
       setError("Không được để trống");
       return;
     }
-    
+
     if (edit) {
+      // ✅ Sửa dự án
       const newproject = {
-      id: edit.id,
-      projectName: nameProject,
-      image: url,
-      note: note,
-      members: [],
-    };
-      dispatch(editProject(newproject))
+        id: edit.id,
+        projectName: nameProject,
+        image: url,
+        note: note,
+        members: [...(edit.members || [])],
+      };
+      dispatch(editProject(newproject));
       Swal.fire({
         position: "top",
         icon: "success",
@@ -83,20 +83,17 @@ export default function AddAndEditProject({
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {
-        setImage(null);
-        setNameProject("");
-        setNote("");
-        setError("");
+        resetForm();
         onClose();
       });
-      
     } else {
+      // ✅ Thêm dự án
       const newproject = {
-      projectName: nameProject,
-      image: url,
-      note: note,
-      members: [],
-    };
+        projectName: nameProject,
+        image: url,
+        note: note,
+        members: [],
+      };
       dispatch(addProject(newproject));
       Swal.fire({
         position: "top",
@@ -105,77 +102,87 @@ export default function AddAndEditProject({
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {
-        setImage(null);
-        setNameProject("");
-        setNote("");
-        setError("");
+        resetForm();
         onClose();
       });
     }
   };
 
+  const resetForm = () => {
+    setImage(null);
+    setNameProject("");
+    setNote("");
+    setError("");
+    setUrl("");
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/30 z-50">
-      <div className="bg-white w-full max-w-md rounded shadow-lg p-6 relative">
-      
+    // ✅ Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
+    <div
+      className={`fixed inset-0 bg-black/30 z-50 items-center justify-center ${
+        isOpen ? "flex" : "hidden"
+      }`}
+    >
+      <div className="bg-white w-full max-w-md rounded shadow-lg p-6 relative animate-fade-in">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Thêm/sửa dự án</h2>
+          <h2 className="text-lg font-semibold">
+            {edit ? "Chỉnh sửa dự án" : "Thêm dự án mới"}
+          </h2>
           <button onClick={onClose} className="text-gray-500 hover:text-black">
             ✕
           </button>
         </div>
 
-       
         <div className="space-y-4">
-        
+          {/* Tên dự án */}
           <div>
             <label className="block text-sm font-medium mb-1">Tên dự án</label>
             <input
               type="text"
               placeholder="Nhập tên dự án"
-              className={`w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
-                error ? "border-red-500" : "border-gray-200"
+              className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
+                error ? "border-red-500" : "border-gray-300"
               }`}
-              onChange={(e) => setNameProject(e.target.value)}
               value={nameProject}
+              onChange={(e) => setNameProject(e.target.value)}
             />
             {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
           </div>
 
-          
+          {/* Hình ảnh */}
           <div>
             <label className="block text-sm font-medium mb-1">
               Hình ảnh dự án
             </label>
             <input
               type="file"
-              className={`w-full border border-gray-300 rounded px-3 py-2 ${
-                error ? "border-red-500" : "border-gray-200"
-              }`}
+              className="w-full border border-gray-300 rounded px-3 py-2"
               onChange={handleInputImage}
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-            <div className="w-30">
-              <img src={url} alt="" />
-            </div>
+            {url && (
+              <div className="mt-2 w-32">
+                <img
+                  src={url}
+                  alt="Ảnh dự án"
+                  className="rounded shadow-sm border"
+                />
+              </div>
+            )}
           </div>
 
-        
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Mô tả dự án
-            </label>
+            <label className="block text-sm font-medium mb-1">Mô tả dự án</label>
             <textarea
               rows={3}
               placeholder="Nhập mô tả dự án"
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
-              onChange={(e) => setNote(e.target.value)}
               value={note}
+              onChange={(e) => setNote(e.target.value)}
             />
           </div>
         </div>
 
-        {/* Footer buttons */}
+        {/* Nút hành động */}
         <div className="flex justify-end space-x-2 mt-6">
           <button
             onClick={onClose}
@@ -184,8 +191,8 @@ export default function AddAndEditProject({
             Hủy
           </button>
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
             onClick={handleAddProject}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
             Lưu
           </button>
