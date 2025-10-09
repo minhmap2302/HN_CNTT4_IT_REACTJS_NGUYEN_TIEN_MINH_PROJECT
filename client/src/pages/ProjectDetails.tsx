@@ -16,8 +16,9 @@ export default function ProjectDetail() {
   const [openMember, setOpenMember] = useState<boolean>(false);
   const [inforMember, setInforMember] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false)
-  const { id } = useParams();
-
+  const { projectId } = useParams();
+  console.log("details", projectId);
+  
   // lấy data project
   const dispatch: any = useDispatch();
   const projects = useSelector((data: any) => {
@@ -32,12 +33,12 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     if (projects.length > 0) {
-      const project = projects.find((p: Project) => p.id === Number(id));
+      const project = projects.find((p: Project) => p.id === Number(projectId));
       if (project) {
         setProjectDetail(project);
       }
     }
-  }, [projects, id])
+  }, [projects,projectId])
 
 
 
@@ -249,6 +250,7 @@ export default function ProjectDetail() {
       <AddAndEditDetails
         isOpen={openAddTask}
         onClose={() => setOpenAddTask(false)}
+        project={projectDetail}
       ></AddAndEditDetails>
       <AddMember
         isOpen={openMember}

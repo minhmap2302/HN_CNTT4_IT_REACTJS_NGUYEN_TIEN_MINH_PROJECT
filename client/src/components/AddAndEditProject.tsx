@@ -9,19 +9,20 @@ interface AddAndEditProjectProps {
   isOpen: boolean;
   onClose: () => void;
   edit: Project | null;
+  id : string | undefined
 }
 
 export default function AddAndEditProject({
   isOpen,
   onClose,
   edit,
+  id
 }: AddAndEditProjectProps) {
   const [nameProject, setNameProject] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [note, setNote] = useState("");
   const [url, setUrl] = useState<string>("");
   const [error, setError] = useState("");
-
   const dispatch: any = useDispatch();
 
   // ✅ Cập nhật dữ liệu khi "edit" thay đổi
@@ -59,7 +60,8 @@ export default function AddAndEditProject({
       console.error("Lỗi upload:", error);
     }
   };
-
+  console.log("addProject : " , id);
+  
   const handleAddProject = () => {
     if (!nameProject || !url) {
       setError("Không được để trống");
@@ -67,9 +69,10 @@ export default function AddAndEditProject({
     }
 
     if (edit) {
-      // ✅ Sửa dự án
+      //  Sửa dự án
       const newproject = {
-        id: edit.id,
+        id: Number(edit.id),
+        idUser : Number(edit.idUser),
         projectName: nameProject,
         image: url,
         note: note,
@@ -90,6 +93,7 @@ export default function AddAndEditProject({
       // ✅ Thêm dự án
       const newproject = {
         projectName: nameProject,
+        idUser : id != undefined ? Number(id) : "", 
         image: url,
         note: note,
         members: [],
@@ -117,7 +121,7 @@ export default function AddAndEditProject({
   };
 
   return (
-    // ✅ Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
+    //  Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
     <div
       className={`fixed inset-0 bg-black/30 z-50 items-center justify-center ${
         isOpen ? "flex" : "hidden"

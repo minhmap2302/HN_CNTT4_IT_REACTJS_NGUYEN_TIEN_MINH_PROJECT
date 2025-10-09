@@ -1,46 +1,36 @@
-import {  createBrowserRouter,  RouterProvider} from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import Register from '../pages/Register';
-import LogIn from '../pages/LogIn';
-import  Manager from './Manager';
-import ProjectManagement from '../pages/ProjectManagement';
-import ProjectDetail from '../pages/ProjectDetails';
-
+import Register from "../pages/Register";
+import LogIn from "../pages/LogIn";
+import Manager from "./Manager";
+import ProjectManagement from "../pages/ProjectManagement";
+import ProjectDetail from "../pages/ProjectDetails";
 
 export default function Main() {
   const routers = createBrowserRouter([
     {
-      path:"/",
-      element:<Register></Register>
+      path: "/",
+      element: <Register />,
     },
     {
-      path:"/login",
-      element:<LogIn></LogIn>
+      path: "/login",
+      element: <LogIn />,
     },
     {
-      path:"/management",
-      element:<Manager></Manager>,
-      children:[
+      path: "/:userId/management",
+      element: <Manager />,
+      children: [
         {
-          path:"",
-          element:<ProjectManagement></ProjectManagement>
+          index: true,
+          element: <ProjectManagement />,
         },
         {
-          path:":id",
-          element:<ProjectDetail></ProjectDetail>
-        }
-      ]
+          path: "project/:projectId",
+          element: <ProjectDetail />,
+        },
+      ],
     },
-    {
-      path:"/detail",
-      element:<ProjectDetail></ProjectDetail>
-    }
-  ])
+  ]);
 
-
-  return (
-    <div>
-      <RouterProvider router={routers}></RouterProvider>
-    </div>
-  );
+  return <RouterProvider router={routers} />;
 }

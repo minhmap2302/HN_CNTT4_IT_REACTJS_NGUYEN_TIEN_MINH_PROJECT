@@ -1,5 +1,5 @@
 export type User = {
-    id : number;
+    id : number | string;
     fullName : string;
     email:string,
     password:string
@@ -18,6 +18,7 @@ export type Task =  {
 
 export type Project = {
     id:number,
+    idUser:number,
     projectName:string,
     image:string,
     note:string,

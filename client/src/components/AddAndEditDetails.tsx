@@ -1,14 +1,19 @@
+import { useState } from "react";
+import type { Project } from "../utils/type";
 
 
 interface PropsAddandEdit {
   isOpen : boolean;
   onClose: () => void;
+  project: Project | null;
 }
 
 
-export default function AddAndEditDetails({isOpen , onClose} : PropsAddandEdit) {
-
+export default function AddAndEditDetails({isOpen , onClose , project} : PropsAddandEdit) {
+  console.log("addAndEdit",project);
   if(!isOpen) return null;
+
+  
   return (
     <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
       <div className="bg-white w-[500px]  rounded-lg shadow-lg p-3">

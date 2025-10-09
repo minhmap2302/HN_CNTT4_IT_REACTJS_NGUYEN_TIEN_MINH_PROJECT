@@ -1,9 +1,10 @@
-import React from "react";
 import Header from "../pages/Header";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import Footer from "../pages/Footer";
 
 export default function Manager() {
+  const {id} = useParams();
+    console.log("id Management :",id);
   return (
     <div>
       <Header></Header>

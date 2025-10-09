@@ -55,12 +55,13 @@ export default function Register() {
       setConfirmPassError("Mật khẩu không trùng khớp");
       return;
     }
-    const newTask: any = {
+    const newUser: any = {
+      id: Date.now(),
       fullName: name,
       email: email,
       password: password,
     };
-    dispatch(addUser(newTask));
+    dispatch(addUser(newUser));
     Swal.fire({
       position: "top",
       icon: "success",
@@ -72,7 +73,7 @@ export default function Register() {
       setName("");
       setConfirmPass("");
       setPassword("");
-      navigate("/management");
+      navigate(`/${newUser.id}/management`);
     });
   };
 

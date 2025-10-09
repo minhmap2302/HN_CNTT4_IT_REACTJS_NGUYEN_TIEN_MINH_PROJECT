@@ -10,7 +10,7 @@ interface PropsMember {
 export default function AddMember({ isOpen, onClose, project }: PropsMember) {
   if (!isOpen) return null;
   if(project!=null){
-    console.log(project);
+    console.log("addMember",project);
   }
   const [email, setEmail] = useState<string>("");
   const [role, setRole] = useState<string>("");
@@ -21,6 +21,7 @@ export default function AddMember({ isOpen, onClose, project }: PropsMember) {
       setError("Hãy điền đầy đủ thông tin");
       return;
     }
+    
   };
 
   return (
