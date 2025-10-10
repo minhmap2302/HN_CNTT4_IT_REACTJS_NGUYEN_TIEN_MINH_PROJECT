@@ -43,16 +43,7 @@ export default function ProjectDetail() {
       }
     }
   }, [projects, projectId]);
-  useEffect(() => {
-    if (projectDetail?.members && users.length > 0) {
-      for (let i = 0; i < projectDetail.members.length; i++) {
-        for (let j = 0; j < users.length; j++) {
-          if (Number(projectDetail.members[i].userId) === Number(users[j].id)) {
-          }
-        }
-      }
-    }
-  });
+  
 
   return (
     <div className="flex justify-center">

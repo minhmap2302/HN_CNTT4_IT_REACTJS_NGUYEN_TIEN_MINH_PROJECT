@@ -18,12 +18,14 @@ export default function AddAndEditProject({
   edit,
   id,
 }: AddAndEditProjectProps) {
+  if(!isOpen) return null;
   const [nameProject, setNameProject] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [note, setNote] = useState("");
   const [url, setUrl] = useState<string>("");
   const [errorName, setErrorName] = useState("");
   const [errorImg , setErrorImg] = useState("");
+  const [errorNote , setErrorNote] = useState("");
   const dispatch: any = useDispatch();
 
   //  Cập nhật dữ liệu khi "edit" thay đổi
@@ -69,6 +71,7 @@ export default function AddAndEditProject({
     setErrorImg("");
     setErrorName("");
     setUrl("");
+    
   };
   // lấy project 
   const project = useSelector((data:any) =>{
@@ -83,10 +86,19 @@ export default function AddAndEditProject({
       setErrorImg("Không được để trống");
       return;
     }
+    if(nameProject.length > 30){
+      setErrorName("Tên dự án chỉ được tối đa 30 kí tự");
+      return;
+    }
+    if(note.length>50){
+      setErrorNote("Mô tả dự án chỉ tối đa 50 kí tự");
+      return;
+    }
     if(findProject != undefined){
       setErrorName("Dự án này đã tồn tại");
       return;
     }
+
     if (edit) {
       //  Sửa dự án
       const editproject = {
@@ -134,9 +146,7 @@ export default function AddAndEditProject({
   return (
     //  Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
     <div
-      className={`fixed inset-0 bg-black/30 z-50 items-center justify-center ${
-        isOpen ? "flex" : "hidden"
-      }`}
+      className="fixed inset-0 bg-black/30 flex justify-center items-center z-50"
     >
       <div className="bg-white w-full max-w-md rounded shadow-lg p-6 relative animate-fade-in">
         <div className="flex justify-between items-center mb-4">
@@ -201,11 +211,14 @@ export default function AddAndEditProject({
             <textarea
               rows={3}
               placeholder="Nhập mô tả dự án"
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+              className={`w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
+                errorNote ? "border-red-500" : "border-gray-300"
+              }`}
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
           </div>
+          {errorNote && <p className="text-red-500 text-sm mt-1">{errorNote}</p>}
         </div>
 
         {/* Nút hành động */}

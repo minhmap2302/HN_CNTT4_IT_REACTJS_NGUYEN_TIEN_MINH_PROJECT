@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Project } from "../utils/type";
+import { useSelector } from "react-redux";
 
 
 interface PropsAddandEdit {
@@ -10,13 +11,33 @@ interface PropsAddandEdit {
 
 
 export default function AddAndEditDetails({isOpen , onClose , project} : PropsAddandEdit) {
-  console.log("addAndEdit",project);
   if(!isOpen) return null;
-
+  //
+  const [nameTask, setNameTask] = useState("");
+  const [personTask, setPersonTask] = useState("");
+  const [status, setStatus] = useState("");
+  const [dayStart, setDayStart] = useState("");
+  const [dayEnd, setDayEnd] = useState("");
+  const [priority, setPriority] = useState("");
+  const [progress , setProgress] = useState("");
+  // error 
+  const [nameTaskError, setNameTaskError] = useState("");
+  const [personTaskError, setPersonTaskError] = useState("");
+  const [statusError, setStatusError] = useState("");
+  const [dayStartError, setDayStartError] = useState("");
+  const [dayEndError, setDayEndError] = useState("");
+  const [priorityError, setPriorityError] = useState("");
+  const [progressError , setProgressError] = useState("");
+  // lấy user 
+  const users = useSelector((data: any) => {
+    console.log("data ben details ve user :", data.account.users);
+    return data.account.users;
+  });
+ 
   
   return (
-    <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
-      <div className="bg-white w-[500px]  rounded-lg shadow-lg p-3">
+    <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-70">
+      <div className="bg-white w-[500px]  rounded-lg shadow-lg p-5">
         
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold mb-4">Thêm/Sửa nhiệm vụ</h2>
@@ -39,17 +60,24 @@ export default function AddAndEditDetails({isOpen , onClose , project} : PropsAd
           <div>
             <label className="block mb-1 font-medium">Người phụ trách</label>
             <select className="w-full border rounded px-3 py-2">
-              <option>Chọn người...</option>
-              <option>Nguyễn Văn A</option>
-              <option>Trần Thị B</option>
+              <option value={"0"}>Chọn người...</option>
+              {project?.members.map((member:any , index : number) => {
+                const user = users.find((i:any) => i.id === member.userId);
+                if(!user) return null;
+                return (
+                  <option key={index} value={user.fullName}>{user.fullName}</option>
+                )
+              })}
             </select>
           </div>
           <div>
             <label className="block mb-1 font-medium">Trạng thái</label>
             <select className="w-full border rounded px-3 py-2">
-              <option>Đang làm</option>
-              <option>Hoàn thành</option>
-              <option>Tạm dừng</option>
+              <option value="0">Chọn trạng thái nhiệm vụ</option>
+              <option value={"to do"}>to do</option> 
+              <option value={"in progress"}>in  progress </option>
+              <option value={"pending"}>pending</option>
+              <option value={"done"}>done</option>
             </select>
           </div>
           <div>
@@ -63,17 +91,19 @@ export default function AddAndEditDetails({isOpen , onClose , project} : PropsAd
           <div>
             <label className="block mb-1 font-medium">Độ ưu tiên</label>
             <select className="w-full border rounded px-3 py-2">
-              <option>Thấp</option>
-              <option>Trung bình</option>
-              <option>Cao</option>
+              <option value={"0"}>Chọn độ ưu tiên nhiệm vụ</option>
+              <option value={"thấp"}>Thấp</option>
+              <option value={"trung bình"}>Trung bình</option>
+              <option value={"cao"}>Cao</option>
             </select>
           </div>
           <div>
             <label className="block mb-1 font-medium">Tiến độ</label>
             <select className="w-full border rounded px-3 py-2">
-              <option>Đúng tiến độ</option>
-              <option>Có rủi ro</option>
-              <option>Chậm tiến độ</option>
+              <option value={"0"}>Chọn tiến độ dự án</option>
+              <option value={"đúng tiến độ"}>Đúng tiến độ</option>
+              <option value={"có rủi ro"}>Có rủi ro</option>
+              <option value={"chậm tiến độ"}>Chậm tiến độ</option>
             </select>
           </div>
         </div>
