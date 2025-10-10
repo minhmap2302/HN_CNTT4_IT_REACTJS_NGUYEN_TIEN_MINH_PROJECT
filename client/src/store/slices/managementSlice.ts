@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // lay data
-
 export const getAllData =  createAsyncThunk("getAllData" , async () => {
     try {
         const res = await axios.get("http://localhost:8080/project");
@@ -13,7 +12,6 @@ export const getAllData =  createAsyncThunk("getAllData" , async () => {
 } )
 
 // them du an
-
 export const addProject = createAsyncThunk("addProject" , async (newProject:any) =>{
     try {
         const res = await axios.post("http://localhost:8080/project",newProject);
@@ -24,7 +22,6 @@ export const addProject = createAsyncThunk("addProject" , async (newProject:any)
 })
 
 // ham sua 
-
 export const editProject = createAsyncThunk("editProject" , async (p : any) => {
     try {
         const res = await axios.put(`http://localhost:8080/project/${p.id}`,p);
@@ -35,7 +32,6 @@ export const editProject = createAsyncThunk("editProject" , async (p : any) => {
 })
 
 // ham xoa
-
 export const deleteProject = createAsyncThunk("deleteProject" , async (id : number) => {
     try {
         const res = await axios.delete(`http://localhost:8080/project/${id}`);
@@ -57,12 +53,12 @@ const managementSlice = createSlice({
             console.log("lấy thành công data Slice : " , action.payload);
              state.project = action.payload
         })
-        .addCase(addProject.fulfilled,(state,action) => {
+        .addCase(addProject.fulfilled,(state : any ,action) => {
             console.log(action.payload);
             console.log("them du an thanh cong");
             state.project.push(action.payload);
         })
-        .addCase(editProject.fulfilled,(state,action)=>{
+        .addCase(editProject.fulfilled,(state : any ,action)=>{
             const index = state.project.findIndex((i:any) => i.id === action.payload.id);
             state.project[index] = action.payload
         })

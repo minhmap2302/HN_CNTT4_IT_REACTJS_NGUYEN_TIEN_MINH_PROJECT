@@ -25,7 +25,7 @@ export default function Main() {
           element: <ProjectManagement />,
         },
         {
-          path: "project/:projectId",
+          path: ":projectId",
           element: <ProjectDetail />,
         },
       ],

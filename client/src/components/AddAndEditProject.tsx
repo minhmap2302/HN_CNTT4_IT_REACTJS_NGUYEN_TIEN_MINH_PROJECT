@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { addProject, editProject } from "../store/slices/managementSlice";
 import axios from "axios";
@@ -9,23 +9,24 @@ interface AddAndEditProjectProps {
   isOpen: boolean;
   onClose: () => void;
   edit: Project | null;
-  id : string | undefined
+  id: string | undefined;
 }
 
 export default function AddAndEditProject({
   isOpen,
   onClose,
   edit,
-  id
+  id,
 }: AddAndEditProjectProps) {
   const [nameProject, setNameProject] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [note, setNote] = useState("");
   const [url, setUrl] = useState<string>("");
-  const [error, setError] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorImg , setErrorImg] = useState("");
   const dispatch: any = useDispatch();
 
-  // ✅ Cập nhật dữ liệu khi "edit" thay đổi
+  //  Cập nhật dữ liệu khi "edit" thay đổi
   useEffect(() => {
     if (edit && typeof edit === "object") {
       setNameProject(edit.projectName || "");
@@ -60,25 +61,43 @@ export default function AddAndEditProject({
       console.error("Lỗi upload:", error);
     }
   };
-  console.log("addProject : " , id);
-  
+  console.log("addProject : ", id);
+  const resetForm = () => {
+    setImage(null);
+    setNameProject("");
+    setNote("");
+    setErrorImg("");
+    setErrorName("");
+    setUrl("");
+  };
+  // lấy project 
+  const project = useSelector((data:any) =>{
+    console.log("project : ",data.management.project);
+    return data.management.project;
+  })
+  const findProject = project.find((i:Project) => i.projectName === nameProject);
+  console.log(findProject);
   const handleAddProject = () => {
     if (!nameProject || !url) {
-      setError("Không được để trống");
+      setErrorName("Không được để trống");
+      setErrorImg("Không được để trống");
       return;
     }
-
+    if(findProject != undefined){
+      setErrorName("Dự án này đã tồn tại");
+      return;
+    }
     if (edit) {
       //  Sửa dự án
-      const newproject = {
+      const editproject = {
         id: Number(edit.id),
-        idUser : Number(edit.idUser),
+        idUser: Number(edit.idUser),
         projectName: nameProject,
         image: url,
         note: note,
         members: [...(edit.members || [])],
       };
-      dispatch(editProject(newproject));
+      dispatch(editProject(editproject));
       Swal.fire({
         position: "top",
         icon: "success",
@@ -90,10 +109,10 @@ export default function AddAndEditProject({
         onClose();
       });
     } else {
-      // ✅ Thêm dự án
+      //  Thêm dự án
       const newproject = {
         projectName: nameProject,
-        idUser : id != undefined ? Number(id) : "", 
+        idUser: id != undefined ? Number(id) : "",
         image: url,
         note: note,
         members: [],
@@ -112,14 +131,6 @@ export default function AddAndEditProject({
     }
   };
 
-  const resetForm = () => {
-    setImage(null);
-    setNameProject("");
-    setNote("");
-    setError("");
-    setUrl("");
-  };
-
   return (
     //  Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
     <div
@@ -132,7 +143,13 @@ export default function AddAndEditProject({
           <h2 className="text-lg font-semibold">
             {edit ? "Chỉnh sửa dự án" : "Thêm dự án mới"}
           </h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-black">
+          <button
+            onClick={() => {
+              resetForm();
+              onClose();
+            }}
+            className="text-gray-500 hover:text-black"
+          >
             ✕
           </button>
         </div>
@@ -145,12 +162,12 @@ export default function AddAndEditProject({
               type="text"
               placeholder="Nhập tên dự án"
               className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
-                error ? "border-red-500" : "border-gray-300"
+                errorName ? "border-red-500" : "border-gray-300"
               }`}
               value={nameProject}
               onChange={(e) => setNameProject(e.target.value)}
             />
-            {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            {errorName && <p className="text-red-500 text-sm mt-1">{errorName}</p>}
           </div>
 
           {/* Hình ảnh */}
@@ -160,9 +177,12 @@ export default function AddAndEditProject({
             </label>
             <input
               type="file"
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className={`w-full border border-gray-300 rounded px-3 py-2 ${
+                errorImg ? "border-red-500" : "border-gray-300"
+              }`}
               onChange={handleInputImage}
             />
+            {errorImg && <p className="text-red-500 text-sm mt-1">{errorImg}</p>}
             {url && (
               <div className="mt-2 w-32">
                 <img
@@ -175,7 +195,9 @@ export default function AddAndEditProject({
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Mô tả dự án</label>
+            <label className="block text-sm font-medium mb-1">
+              Mô tả dự án
+            </label>
             <textarea
               rows={3}
               placeholder="Nhập mô tả dự án"
@@ -189,7 +211,10 @@ export default function AddAndEditProject({
         {/* Nút hành động */}
         <div className="flex justify-end space-x-2 mt-6">
           <button
-            onClick={onClose}
+            onClick={() => {
+              resetForm();
+              onClose();
+            }}
             className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-400"
           >
             Hủy

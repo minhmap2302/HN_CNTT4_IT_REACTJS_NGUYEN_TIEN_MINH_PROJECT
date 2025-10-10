@@ -1,39 +1,60 @@
 {
   "user": [
     {
-      "id": 1759925722384,
+      "id": 1759997903905,
       "fullName": "Dương Đức Lộc ",
       "email": "axyz09527@gmail.com",
       "password": "12345678"
     },
     {
-      "id": 1759925898187,
-      "fullName": "Duong Duc Loc",
-      "email": "locduong25051006@gmail.com",
+      "id": 1759997986489,
+      "fullName": "duong",
+      "email": "a@gmail.com",
+      "password": "12345678"
+    },
+    {
+      "id": 1759998074393,
+      "fullName": "v",
+      "email": "v@gmail.com",
+      "password": "12345678"
+    },
+    {
+      "id": 1759998093561,
+      "fullName": "b",
+      "email": "b@gmail.com",
       "password": "12345678"
     }
   ],
-  "task": [
-    {
-      "id": 1,
-      "taskName": "Soạn thảo đề cương dự án",
-      "assigneeId": 1,
-      "projectId": 1,
-      "asignDate": "2025-03-24",
-      "dueDate": "2025-03-26",
-      "priority": "Thấp",
-      "progress": "Đúng tiến độ",
-      "status": "To do"
-    }
-  ],
+  "task": [],
   "project": [
     {
-      "projectName": "aaaaaaas",
-      "idUser": 1759925898187,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1759925956/bhvqhn4lskvj1bszqjkk.png",
-      "note": "12345678",
-      "members": [],
-      "id": 2
+      "id": 1,
+      "idUser": 1759997903905,
+      "projectName": "website bán hàng",
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1759997921/iinyfvwbqtai6tosqiql.png",
+      "note": "website bán hàng thời trang : quần áo , giày dép",
+      "members": [
+        {
+          "userId": 1759998074393,
+          "role": "1"
+        },
+        {
+          "userId": 1759998093561,
+          "role": "1"
+        },
+        {
+          "userId": 1759997986489,
+          "role": "1"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "idUser": 1759997903905,
+      "projectName": "aa222",
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760069472/trfcsdohgd1xe6f3cvcg.png",
+      "note": "a",
+      "members": []
     }
   ]
 }

@@ -1,4 +1,4 @@
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, User} from "lucide-react";
 import { useEffect, useState } from "react";
 import AddAndEditDetails from "../components/AddAndEditDetails";
 import AddMember from "../components/AddMember";
@@ -6,29 +6,33 @@ import InforMember from "../components/InforMember";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllData } from "../store/slices/managementSlice";
-import type { Project } from "../utils/type";
+import type { Project} from "../utils/type";
 import DeleteDetails from "../components/DeleteDetails";
-
-
+import { getAllAccount } from "../store/slices/accountSlice";
 
 export default function ProjectDetail() {
   const [openAddTask, setOpenAddTask] = useState<boolean>(false);
   const [openMember, setOpenMember] = useState<boolean>(false);
   const [inforMember, setInforMember] = useState<boolean>(false);
-  const [openDelete, setOpenDelete] = useState<boolean>(false)
+  const [openDelete, setOpenDelete] = useState<boolean>(false);
   const { projectId } = useParams();
-  console.log("details", projectId);
-  
+  console.log("details id ", projectId);
+
   // lấy data project
   const dispatch: any = useDispatch();
   const projects = useSelector((data: any) => {
-    console.log("data ben deteial: ", data.management.project);
+    console.log("data ben deteial ve project : ", data.management.project);
     return data.management.project;
   });
-
+  // lấy data user
+  const users = useSelector((data: any) => {
+    console.log("data ben details ve user :", data.account.users);
+    return data.account.users;
+  });
   const [projectDetail, setProjectDetail] = useState<Project | null>(null);
   useEffect(() => {
     dispatch(getAllData());
+    dispatch(getAllAccount());
   }, [dispatch]);
 
   useEffect(() => {
@@ -38,9 +42,17 @@ export default function ProjectDetail() {
         setProjectDetail(project);
       }
     }
-  }, [projects,projectId])
-
-
+  }, [projects, projectId]);
+  useEffect(() => {
+    if (projectDetail?.members && users.length > 0) {
+      for (let i = 0; i < projectDetail.members.length; i++) {
+        for (let j = 0; j < users.length; j++) {
+          if (Number(projectDetail.members[i].userId) === Number(users[j].id)) {
+          }
+        }
+      }
+    }
+  });
 
   return (
     <div className="flex justify-center">
@@ -56,7 +68,7 @@ export default function ProjectDetail() {
                 alt="thumbnail"
                 className="w-40 h-28 object-cover rounded-lg"
               />
-             
+
               <p className="text-gray-600 text-sm max-w-xs">
                 {projectDetail?.note}
               </p>
@@ -74,28 +86,27 @@ export default function ProjectDetail() {
                 + Thêm thành viên
               </button>
             </div>
+            {/* in thanh vien */}
+            <div className="space-y-3 flex  justify-between flex-wrap">
+              <div className="flex gap-[20px]">
+                {projectDetail?.members.map((member: any, i: number) => {
+                  const user = users.find((u: any) => u.id === member.userId);
+                  if (!user) return null;
 
-            <div className="space-y-3 flex  justify-between">
-              <div className="flex gap-[15px]">
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                    AN
-                  </div>
-                  <div>
-                    <p className="font-medium">An Nguyễn</p>
-                    <p className="text-xs text-gray-500">Project Owner</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
-                    BA
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium">Bách Nguyễn</p>
-                    <p className="text-xs text-gray-500">Frontend Developer</p>
-                  </div>
-                </div>
+                  return (
+                    <div key={i} className="flex justify-between items-center">
+                      <div className="flex items-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
+                          <User/>
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium">{user.fullName}</p>
+                          <p className="text-xs text-gray-500">{member.role}</p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
               <button
                 className="text-gray-500 hover:text-gray-700"
@@ -180,7 +191,8 @@ export default function ProjectDetail() {
                   >
                     Sửa
                   </button>
-                  <button className="px-2 py-1 bg-red-500 text-white rounded"
+                  <button
+                    className="px-2 py-1 bg-red-500 text-white rounded"
                     onClick={() => setOpenDelete(true)}
                   >
                     Xóa
@@ -263,8 +275,8 @@ export default function ProjectDetail() {
       ></InforMember>
       <DeleteDetails
         isOpen={openDelete}
-        onClose={() => setOpenDelete(false)}>
-      </DeleteDetails>
+        onClose={() => setOpenDelete(false)}
+      ></DeleteDetails>
     </div>
   );
 }

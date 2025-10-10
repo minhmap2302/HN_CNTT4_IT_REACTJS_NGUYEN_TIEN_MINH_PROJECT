@@ -38,7 +38,7 @@ const account  = createSlice({
         .addCase(getAllAccount.fulfilled,(state , action) => {
             state.users = action.payload
         })
-        .addCase(addUser.fulfilled,(state,action) => {
+        .addCase(addUser.fulfilled,(state : any,action) => {
             console.log("them thanh cong", action.payload);
             state.users.push(action.payload);
         })

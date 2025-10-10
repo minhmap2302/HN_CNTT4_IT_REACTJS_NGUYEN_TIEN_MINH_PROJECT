@@ -1,5 +1,9 @@
-import { useState } from "react";
-import type { Project } from "../utils/type";
+import { useEffect, useState } from "react";
+import type { Project, User } from "../utils/type";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllAccount } from "../store/slices/accountSlice";
+import { editProject } from "../store/slices/managementSlice";
+import Swal from "sweetalert2";
 
 interface PropsMember {
   isOpen: boolean;
@@ -9,19 +13,69 @@ interface PropsMember {
 
 export default function AddMember({ isOpen, onClose, project }: PropsMember) {
   if (!isOpen) return null;
-  if(project!=null){
-    console.log("addMember",project);
+  if (project != null) {
+    console.log("addMember", project);
   }
   const [email, setEmail] = useState<string>("");
   const [role, setRole] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [errorEmail, setErrorEmail] = useState<string>("");
+  const [errorRole, setErrorRole] = useState<string>("");
+  // lay dataUser
+  const getData = useSelector((data: any) => {
+    console.log("user ben add member", data.account.users);
+    return data.account.users;
+  });
+  const dispatch: any = useDispatch();
+  useEffect(() => {
+    dispatch(getAllAccount());
+  }, []);
 
   const handleSave = () => {
     if (!email || !role) {
-      setError("Hãy điền đầy đủ thông tin");
+      setErrorEmail("Hãy điền đầy đủ thông tin");
+      setErrorRole("Hãy điền đầy đủ thông tin");
       return;
     }
-    
+    // tim email
+    const findEmail = getData.find((i: User) => i.email === email);
+    console.log("tim email", findEmail);
+    // check email trong project da co chua
+    if (project?.members.find((i: any) => i.userId === findEmail.id)) {
+      setErrorEmail("email đã tồn tại");
+      return;
+    }
+    // check email da dang ki tai khoan chua
+    if (findEmail == undefined) {
+      setErrorEmail("email này chưa được đăng kí");
+      return;
+    }
+    // them member vao project
+    const newMember = {
+      userId: findEmail.id,
+      role: role,
+    };
+
+    if (project) {
+      const projectUpdate = {
+        ...project,
+        members: [...project.members, newMember],
+      };
+      dispatch(editProject(projectUpdate));
+      Swal.fire({
+        position: "top",
+        icon: "success",
+        title: "Thêm thành viên thành công",
+        showConfirmButton: false,
+        timer: 1000,
+      }).then(() => {
+        setEmail("");
+        setRole("");
+        setErrorEmail("");
+        setErrorRole("");
+        onClose();
+      });
+      
+    }
   };
 
   return (
@@ -45,14 +99,16 @@ export default function AddMember({ isOpen, onClose, project }: PropsMember) {
               <input
                 type="email"
                 className={`w-full border rounded px-3 py-2 focus:outline-none ${
-                  error ? "border-red-500" : "border-gray-200"
+                  errorEmail ? "border-red-500" : "border-gray-200"
                 }`}
                 placeholder="Nhập email"
                 onChange={(e) => {
                   setEmail(e.target.value);
                 }}
               />
-              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+              {errorEmail && (
+                <p className="text-red-500 text-sm mt-1">{errorEmail}</p>
+              )}
             </div>
 
             {/* Vai trò */}
@@ -62,13 +118,15 @@ export default function AddMember({ isOpen, onClose, project }: PropsMember) {
                 type="text"
                 placeholder="Nhập vai trò"
                 className={`w-full border rounded px-3 py-2 focus:outline-none ${
-                  error ? "border-red-500" : "border-gray-200"
+                  errorRole ? "border-red-500" : "border-gray-200"
                 }`}
                 onChange={(e) => {
                   setRole(e.target.value);
                 }}
               />
-              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+              {errorRole && (
+                <p className="text-red-500 text-sm mt-1">{errorRole}</p>
+              )}
             </div>
           </div>
 

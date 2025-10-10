@@ -36,7 +36,7 @@ export default function ProjectManagement() {
   };
 
   const handleDetail = (projectId: number) => {
-    navi(`/${userId}/management/project/${projectId}`);
+    navi(`/${userId}/management/${projectId}`);
   };
 
   const searchJob = projects.filter(
@@ -136,7 +136,9 @@ export default function ProjectManagement() {
 
       <AddAndEditProject
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          setIsOpen(false)
+        }}
         edit={edit}
         id={userId}
       />

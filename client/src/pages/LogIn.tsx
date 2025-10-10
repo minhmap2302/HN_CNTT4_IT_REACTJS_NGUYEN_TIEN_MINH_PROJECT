@@ -41,6 +41,8 @@ export default function LogIn() {
         showConfirmButton: false,
         timer: 1000,
       }).then(() => {
+        setEmail("");
+        setPassword("");
         navi(`/${user.id}/management`);
       });
     } else {
@@ -48,6 +50,9 @@ export default function LogIn() {
         icon: "error",
         title: "Đăng nhập thất bại",
         text: "Sai email hoặc mật khẩu!",
+      }).then(() => {
+        setEmail("");
+        setPassword("");
       });
     }
   };
@@ -64,12 +69,13 @@ export default function LogIn() {
             <div>
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
-                type="email"
+                type="text"
                 placeholder="Địa chỉ email"
                 className={`w-full px-4 py-3 rounded-lg border text-center focus:ring-2 focus:ring-blue-300 ${
                   emailError ? "border-red-500" : "border-gray-200"
                 }`}
                 onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
               {emailError && (
                 <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -85,6 +91,7 @@ export default function LogIn() {
                   passwordError ? "border-red-500" : "border-gray-200"
                 }`}
                 onChange={(e) => setPassword(e.target.value)}
+                value={password}
               />
               {passwordError && (
                 <p className="text-red-500 text-sm mt-1">{passwordError}</p>
