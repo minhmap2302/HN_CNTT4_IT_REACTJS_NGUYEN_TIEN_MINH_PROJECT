@@ -1,11 +1,20 @@
+import { useDispatch } from "react-redux";
+import { deleteDataTask } from "../store/slices/detailsSlice";
 
 
 interface DeleteProjectProps {
   isOpen: boolean;
   onClose: () => void;
+  id : number | null
 }
-export default function DeleteDetails({ isOpen, onClose }: DeleteProjectProps) {
+export default function DeleteDetails({ isOpen, onClose , id }: DeleteProjectProps) {
   if (!isOpen) return null;
+  console.log(id);
+  const dispatch : any = useDispatch();
+  const handleDelete = () => {
+    if(id!=null) dispatch(deleteDataTask(id))
+      onClose();
+  }
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
       <div className="bg-white rounded-lg shadow-lg w-[400px] animate-fadeIn">
@@ -28,6 +37,7 @@ export default function DeleteDetails({ isOpen, onClose }: DeleteProjectProps) {
             Hủy
           </button>
           <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          onClick={handleDelete}
           >
             Xoá
           </button>

@@ -4,12 +4,13 @@ import axios from "axios";
 // lay data
 export const getAllData =  createAsyncThunk("getAllData" , async () => {
     try {
-        const res = await axios.get("http://localhost:8080/project");
+        const res = await axios.get(`http://localhost:8080/project`);
         return res.data
     } catch (error) {
         console.log(error);
     }
 } )
+
 
 // them du an
 export const addProject = createAsyncThunk("addProject" , async (newProject:any) =>{
@@ -50,12 +51,9 @@ const managementSlice = createSlice({
     extraReducers:(builder) => {
         builder
         .addCase(getAllData.fulfilled,(state,action) => {
-            console.log("lấy thành công data Slice : " , action.payload);
              state.project = action.payload
         })
         .addCase(addProject.fulfilled,(state : any ,action) => {
-            console.log(action.payload);
-            console.log("them du an thanh cong");
             state.project.push(action.payload);
         })
         .addCase(editProject.fulfilled,(state : any ,action)=>{
@@ -63,9 +61,9 @@ const managementSlice = createSlice({
             state.project[index] = action.payload
         })
         .addCase(deleteProject.fulfilled, (state,action) => {
-            console.log("xoa thanh cong");
             state.project = state.project.filter((i:any) => i.id !== action.payload);
         })
+        
     }
 })
 

@@ -3,8 +3,8 @@ import { Outlet, useParams } from "react-router-dom";
 import Footer from "../pages/Footer";
 
 export default function Manager() {
-  const {id} = useParams();
-    console.log("id Management :",id);
+  const {userId} = useParams();
+    console.log("id Management :",userId);
   return (
     <>
       <Header></Header>

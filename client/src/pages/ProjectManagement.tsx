@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllData } from "../store/slices/managementSlice";
 import type { Project } from "../utils/type";
+import { Pagination } from "antd";
 
 export default function ProjectManagement() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,9 @@ export default function ProjectManagement() {
   const [deleteProject, setDeleteProject] = useState<number>();
   const navi = useNavigate();
   const dispatch: any = useDispatch();
+
+  // const [currentPage, setCurrentPage] = useState(1); // 👈 trang hiện tại
+  // const pageSize = 5;
 
   const projects: Project[] = useSelector(
     (state: any) => state.management.project || []
@@ -45,6 +49,18 @@ export default function ProjectManagement() {
       p.idUser === Number(userId)
   );
 
+  
+  const itemsPerPage = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(searchJob.length / itemsPerPage);
+
+  
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentProjects = searchJob.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+  };
   return (
     <div className="p-6 flex flex-col items-center">
       <div className="w-full max-w-6xl bg-white shadow rounded p-6">
@@ -79,11 +95,15 @@ export default function ProjectManagement() {
             </tr>
           </thead>
           <tbody>
-            {searchJob.length > 0 ? (
-              searchJob.map((p, i) => (
-                <tr key={p.id || i} className="border-t">
-                  <td className="px-4 py-2 text-center">{i + 1}</td>
-                  <td className="px-4 py-2">{p.projectName}</td>
+            {currentProjects.length > 0 ? (
+              currentProjects.map((p, i) => (
+                <tr key={p.id || i} className="border-t border-gray-300">
+                  <td className="px-4 py-2 border-r border-gray-300 text-center">
+                    {p.id}
+                  </td>
+                  <td className="px-4 py-2 border-r border-gray-300">
+                    {p.projectName}
+                  </td>
                   <td className="px-4 py-2 flex justify-center space-x-2">
                     <button
                       className="bg-yellow-400 text-black px-3 py-1 rounded w-20 hover:bg-yellow-500"
@@ -116,28 +136,50 @@ export default function ProjectManagement() {
           </tbody>
         </table>
       </div>
-      {searchJob.length > 0 ? (
-        <div className="flex justify-center items-center space-x-1 mt-6">
-          <button className="px-3 py-1 border border-gray-300 rounded-l text-gray-400 bg-gray-100">
-            ‹
-          </button>
-          <button className="px-3 py-1 border border-gray-300 bg-blue-500 text-white">
-            1
-          </button>
-          <button className="px-3 py-1 border border-gray-300">2</button>
-          <button className="px-3 py-1 border border-gray-300">3</button>
-          <button className="px-3 py-1 border border-gray-300 rounded-r bg-gray-100">
-            ›
-          </button>
-        </div>
-      ) : (
-        ""
-      )}
+      {/* PHÂN TRANG */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center space-x-1 mt-6">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 border border-gray-300 rounded-l ${
+                currentPage === 1 ? "text-gray-400 bg-gray-100 cursor-not-allowed" : "bg-white"
+              }`}
+            >
+              ‹
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i + 1}
+                onClick={() => handlePageChange(i + 1)}
+                className={`px-3 py-1 border border-gray-300 ${
+                  currentPage === i + 1 ? "bg-blue-500 text-white" : "bg-white"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            
+
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 border border-gray-300 rounded-r ${
+                currentPage === totalPages
+                  ? "text-gray-400 bg-gray-100 cursor-not-allowed"
+                  : "bg-white"
+              }`}
+            >
+              ›
+            </button>
+          </div>
+        )}
 
       <AddAndEditProject
         isOpen={isOpen}
         onClose={() => {
-          setIsOpen(false)
+          setIsOpen(false);
         }}
         edit={edit}
         id={userId}

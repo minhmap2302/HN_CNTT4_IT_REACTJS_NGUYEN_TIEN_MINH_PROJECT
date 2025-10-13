@@ -23,38 +23,122 @@
       "fullName": "b",
       "email": "b@gmail.com",
       "password": "12345678"
+    },
+    {
+      "id": 1760284711279,
+      "fullName": "Dương Đức Lộc ",
+      "email": "c@gmail.com",
+      "password": "12345678"
     }
   ],
-  "task": [],
+  "task": [
+    {
+      "taskName": "a",
+      "assingeeId": 1759997986489,
+      "projectId": 1,
+      "assgnDate": "2025-10-16",
+      "dueDate": "2025-10-07",
+      "priority": "thấp",
+      "progress": "đúng tiến độ",
+      "status": "todo",
+      "id": 2
+    },
+    {
+      "taskName": "q",
+      "assingeeId": 1759998074393,
+      "projectId": 1,
+      "assgnDate": "2025-10-12",
+      "dueDate": "2025-10-18",
+      "priority": "thấp",
+      "progress": "có rủi ro",
+      "status": "inprogress",
+      "id": 3
+    },
+    {
+      "id": 4,
+      "taskName": "a2",
+      "assingeeId": 1759998093561,
+      "projectId": 2,
+      "assgnDate": "2025-10-16",
+      "dueDate": "2025-10-17",
+      "priority": "trung bình",
+      "progress": "đúng tiến độ",
+      "status": "inprogress"
+    }
+  ],
   "project": [
     {
-      "id": 1,
+      "id": 2,
       "idUser": 1759997903905,
-      "projectName": "website bán hàng",
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1759997921/iinyfvwbqtai6tosqiql.png",
-      "note": "website bán hàng thời trang : quần áo , giày dép",
+      "projectName": "ưwww",
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760188093/vswbymbcm9iz621jq7br.png",
+      "note": "",
       "members": [
         {
-          "userId": 1759998074393,
-          "role": "1"
+          "userId": 1759997986489,
+          "role": "member"
         },
         {
           "userId": 1759998093561,
-          "role": "1"
-        },
-        {
-          "userId": 1759997986489,
-          "role": "1"
+          "role": "quan li"
         }
       ]
     },
     {
-      "id": 2,
+      "projectName": "r",
       "idUser": 1759997903905,
-      "projectName": "aa222",
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760069472/trfcsdohgd1xe6f3cvcg.png",
-      "note": "a",
-      "members": []
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760188116/evce8raojmrymvevyof1.png",
+      "note": "",
+      "members": [],
+      "id": 4
+    },
+    {
+      "projectName": "y",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760275410/zuzwfbmpoueycnevhbpz.png",
+      "note": "",
+      "members": [],
+      "id": 6
+    },
+    {
+      "projectName": "rr",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340366/gbddmrechuwh7jxtjj43.png",
+      "note": "",
+      "members": [],
+      "id": 7
+    },
+    {
+      "projectName": "rrr",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340462/w6rjurmx9yciqvv7uzum.png",
+      "note": "",
+      "members": [],
+      "id": 8
+    },
+    {
+      "projectName": "rrrr",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340472/fkzejuhvp3zq4oapu5nj.png",
+      "note": "",
+      "members": [],
+      "id": 9
+    },
+    {
+      "projectName": "rrrrr",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340481/qjfxn5kd0ymbvozd0h09.png",
+      "note": "",
+      "members": [],
+      "id": 10
+    },
+    {
+      "projectName": "rrrrrr",
+      "idUser": 1759997903905,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340497/u73p8azyuwxnojktj7tx.png",
+      "note": "",
+      "members": [],
+      "id": 11
     }
   ]
 }

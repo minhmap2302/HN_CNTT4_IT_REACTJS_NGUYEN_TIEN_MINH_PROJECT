@@ -28,7 +28,6 @@ export default function AddAndEditProject({
   const [errorNote , setErrorNote] = useState("");
   const dispatch: any = useDispatch();
 
-  //  Cập nhật dữ liệu khi "edit" thay đổi
   useEffect(() => {
     if (edit && typeof edit === "object") {
       setNameProject(edit.projectName || "");
@@ -63,7 +62,6 @@ export default function AddAndEditProject({
       console.error("Lỗi upload:", error);
     }
   };
-  console.log("addProject : ", id);
   const resetForm = () => {
     setImage(null);
     setNameProject("");
@@ -73,13 +71,10 @@ export default function AddAndEditProject({
     setUrl("");
     
   };
-  // lấy project 
   const project = useSelector((data:any) =>{
-    console.log("project : ",data.management.project);
     return data.management.project;
   })
   const findProject = project.find((i:Project) => i.projectName === nameProject);
-  console.log(findProject);
   const handleAddProject = () => {
     if (!nameProject || !url) {
       setErrorName("Không được để trống");
@@ -94,7 +89,7 @@ export default function AddAndEditProject({
       setErrorNote("Mô tả dự án chỉ tối đa 50 kí tự");
       return;
     }
-    if(findProject != undefined){
+    if(findProject != undefined && !edit){
       setErrorName("Dự án này đã tồn tại");
       return;
     }

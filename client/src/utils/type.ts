@@ -8,12 +8,13 @@ export type User = {
 export type Task =  {
     id:number;
     taskName:string;
-    assigneeId:number,
-    asignDate:string,
+    assingeeId:number,
+    assgnDate:string,
     dueDate:string,
     priority:string,
     progress:string,
-    status:string
+    status:string,
+    projectId : number
 }
 
 export type Project = {

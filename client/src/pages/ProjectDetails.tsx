@@ -1,4 +1,4 @@
-import { MoreHorizontal, User} from "lucide-react";
+import { MoreHorizontal, User } from "lucide-react";
 import { useEffect, useState } from "react";
 import AddAndEditDetails from "../components/AddAndEditDetails";
 import AddMember from "../components/AddMember";
@@ -6,33 +6,52 @@ import InforMember from "../components/InforMember";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllData } from "../store/slices/managementSlice";
-import type { Project} from "../utils/type";
+import type { Project, Task } from "../utils/type";
 import DeleteDetails from "../components/DeleteDetails";
 import { getAllAccount } from "../store/slices/accountSlice";
+import { getDataTask } from "../store/slices/detailsSlice";
+import { RxTriangleDown, RxTriangleRight } from "react-icons/rx";
 
 export default function ProjectDetail() {
   const [openAddTask, setOpenAddTask] = useState<boolean>(false);
   const [openMember, setOpenMember] = useState<boolean>(false);
   const [inforMember, setInforMember] = useState<boolean>(false);
   const [openDelete, setOpenDelete] = useState<boolean>(false);
+
+  const [openTodo, setOpenTodo] = useState(true);
+  const [openProgress, setOpenProgress] = useState(true);
+  const [openPending, setOpenPending] = useState(true);
+  const [openDone, setOpenDone] = useState(true);
+
+  const [edit , setEdit] = useState<Task | null >(null);
+  const [deleteID , setDeleteID] = useState<number|null>(null);
+
+
   const { projectId } = useParams();
   console.log("details id ", projectId);
 
   // lấy data project
   const dispatch: any = useDispatch();
   const projects = useSelector((data: any) => {
-    console.log("data ben deteial ve project : ", data.management.project);
     return data.management.project;
   });
   // lấy data user
   const users = useSelector((data: any) => {
-    console.log("data ben details ve user :", data.account.users);
     return data.account.users;
   });
+  
+
+  // lay task
+  const tasks = useSelector((data: any) => {
+    console.log(data.details.task);
+    return data.details.task;
+  });
+
   const [projectDetail, setProjectDetail] = useState<Project | null>(null);
   useEffect(() => {
     dispatch(getAllData());
     dispatch(getAllAccount());
+    dispatch(getDataTask());
   }, [dispatch]);
 
   useEffect(() => {
@@ -43,8 +62,11 @@ export default function ProjectDetail() {
       }
     }
   }, [projects, projectId]);
-  
-
+  const arrTask = Array.isArray(tasks)
+    ? tasks.filter((i: Task) => Number(i.projectId) === Number(projectId))
+    : null;
+  console.log(arrTask);
+  console.log(edit);
   return (
     <div className="flex justify-center">
       <div className="p-10 space-y-7">
@@ -78,8 +100,8 @@ export default function ProjectDetail() {
               </button>
             </div>
             {/* in thanh vien */}
-            <div className="space-y-3 flex  justify-between flex-wrap">
-              <div className="flex gap-[20px]">
+            <div className="space-y-3 flex  justify-between ">
+              <div className="flex  flex-wrap  gap-4 ">
                 {projectDetail?.members.map((member: any, i: number) => {
                   const user = users.find((u: any) => u.id === member.userId);
                   if (!user) return null;
@@ -88,7 +110,7 @@ export default function ProjectDetail() {
                     <div key={i} className="flex justify-between items-center">
                       <div className="flex items-center gap-2">
                         <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">
-                          <User/>
+                          <User />
                         </div>
                         <div className="flex-1">
                           <p className="font-medium">{user.fullName}</p>
@@ -133,8 +155,9 @@ export default function ProjectDetail() {
         </div>
 
         {/* PHẦN 2: Bảng công việc */}
-        <div className="bg-white shadow rounded-2xl p-4">
+        <div className="bg-white shadow rounded-2xl p-4 overflow-y-auto max-h-[400px]">
           <h3 className="text-lg font-semibold mb-4">Danh Sách Nhiệm Vụ</h3>
+
           <table className="w-full text-sm border border-gray-300 border-collapse rounded-lg overflow-hidden">
             <thead>
               <tr className="bg-gray-100 text-left">
@@ -147,105 +170,291 @@ export default function ProjectDetail() {
                 <th className="p-2 border border-gray-300">Hành động</th>
               </tr>
             </thead>
+
             <tbody>
-              {/* Group: To do */}
               <tr>
                 <td
                   colSpan={7}
-                  className="bg-gray-50 p-2 font-semibold border border-gray-300"
+                  className="p-2 font-semibold cursor-pointer select-none"
+                  onClick={() => setOpenTodo(!openTodo)}
                 >
-                  ▼ To do
+                  <div className="flex items-center gap-2 w-full">
+                    {openTodo ? (
+                      <RxTriangleDown size={20} />
+                    ) : (
+                      <RxTriangleRight size={20} />
+                    )}
+                    To do
+                  </div>
                 </td>
               </tr>
-              <tr className="even:bg-gray-50">
-                <td className="p-2 border border-gray-300">
-                  Soạn thảo đề cương dự án
-                </td>
-                <td className="p-2 border border-gray-300">An Nguyễn</td>
-                <td className="p-2 border border-gray-300">
-                  <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
-                    Thấp
-                  </span>
-                </td>
-                <td className="p-2 border border-gray-300">02-24</td>
-                <td className="p-2 border border-gray-300">02-27</td>
-                <td className="p-2 border border-gray-300">
-                  <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
-                    Đúng tiến độ
-                  </span>
-                </td>
-                {/*  */}
-                <td className="p-2 border border-gray-300 flex gap-2">
-                  <button
-                    className="px-2 py-1 bg-yellow-400 text-white rounded"
-                    onClick={() => setOpenAddTask(true)}
-                  >
-                    Sửa
-                  </button>
-                  <button
-                    className="px-2 py-1 bg-red-500 text-white rounded"
-                    onClick={() => setOpenDelete(true)}
-                  >
-                    Xóa
-                  </button>
-                </td>
-              </tr>
+              {openTodo &&
+                arrTask?.map((value: any, index: any) => {
+                  if (value.status == "todo") {
+                    const user = users.find(
+                      (i: any) => Number(i.id) == Number(value.assingeeId)
+                    );
+                    return (
+                      <tr className="even:bg-gray-50" key={index}>
+                        <td className="p-2 border border-gray-300">
+                          {value.taskName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {user?.fullName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className={`px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs`}>
+                            {value.priority}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.assgnDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.dueDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className={`px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs`}>
+                            {value.progress}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300 flex gap-2">
+                          <button
+                            className="px-2 py-1 bg-yellow-400 text-white rounded"
+                            onClick={() => {
+                              setOpenAddTask(true)
+                              setEdit(value)
+                            }}
+                          >
+                            Sửa
+                          </button>
+                          <button
+                            className="px-2 py-1 bg-red-500 text-white rounded"
+                            onClick={() => {
+                              setOpenDelete(true)
+                              setDeleteID(value.id)
+                            }}
+                          >
+                            Xóa
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
 
-              {/* Group: In Progress */}
               <tr>
                 <td
                   colSpan={7}
-                  className="bg-gray-50 p-2 font-semibold border border-gray-300"
+                  className="p-2 font-semibold cursor-pointer select-none"
+                  onClick={() => setOpenProgress(!openProgress)}
                 >
-                  ▼ In Progress
+                  <div className="flex items-center gap-2 w-full">
+                    {openProgress ? (
+                      <RxTriangleDown size={20} />
+                    ) : (
+                      <RxTriangleRight size={20} />
+                    )}
+                    In Progress
+                  </div>
                 </td>
               </tr>
-              <tr className="even:bg-gray-50">
-                <td className="p-2 border border-gray-300">
-                  Lên lịch họp kickoff
-                </td>
-                <td className="p-2 border border-gray-300">An Nguyễn</td>
-                <td className="p-2 border border-gray-300">
-                  <span className="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-lg text-xs">
-                    Trung bình
-                  </span>
-                </td>
-                <td className="p-2 border border-gray-300">02-24</td>
-                <td className="p-2 border border-gray-300">02-27</td>
-                <td className="p-2 border border-gray-300">
-                  <span className="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-lg text-xs">
-                    Có rủi ro
-                  </span>
-                </td>
-                <td className="p-2 border border-gray-300 flex gap-2">
-                  <button className="px-2 py-1 bg-yellow-400 text-white rounded">
-                    Sửa
-                  </button>
-                  <button className="px-2 py-1 bg-red-500 text-white rounded">
-                    Xóa
-                  </button>
-                </td>
-              </tr>
+              {openProgress &&
+                arrTask?.map((value: any, index: any) => {
+                  if (value.status == "inprogress") {
+                    const user = users.find(
+                      (i: any) => Number(i.id) == Number(value.assingeeId)
+                    );
+                    return (
+                      <tr className="even:bg-gray-50" key={index}>
+                        <td className="p-2 border border-gray-300">
+                          {value.taskName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {user?.fullName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.priority}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.assgnDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.dueDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.progress}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300 flex gap-2">
+                          <button
+                            className="px-2 py-1 bg-yellow-400 text-white rounded"
+                            onClick={() => {
+                              setOpenAddTask(true)
+                              setEdit(value)
+                            }}
+                          >
+                            Sửa
+                          </button>
+                          <button
+                            className="px-2 py-1 bg-red-500 text-white rounded"
+                            onClick={() => {
+                              setOpenDelete(true)
+                              setDeleteID(value.id)
+                            }}
+                          >
+                            Xóa
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
 
-              {/* Group: Pending */}
               <tr>
                 <td
                   colSpan={7}
-                  className="bg-gray-50 p-2 font-semibold border border-gray-300"
+                  className="p-2 font-semibold cursor-pointer select-none"
+                  onClick={() => setOpenPending(!openPending)}
                 >
-                  ▼ Pending
+                  <div className="flex items-center gap-2 w-full">
+                    {openPending ? (
+                      <RxTriangleDown size={20} />
+                    ) : (
+                      <RxTriangleRight size={20} />
+                    )}
+                    Pending
+                  </div>
                 </td>
               </tr>
+              {openPending &&
+                arrTask?.map((value: any, index: any) => {
+                  if (value.status == "pending") {
+                    const user = users.find(
+                      (i: any) => Number(i.id) == Number(value.assingeeId)
+                    );
+                    return (
+                      <tr className="even:bg-gray-50" key={index}>
+                        <td className="p-2 border border-gray-300">
+                          {value.taskName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {user?.fullName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.priority}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.assgnDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.dueDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.progress}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300 flex gap-2">
+                          <button
+                            className="px-2 py-1 bg-yellow-400 text-white rounded"
+                            onClick={() => {
+                              setOpenAddTask(true)
+                              setEdit(value)
+                            }}
+                          >
+                            Sửa
+                          </button>
+                          <button
+                            className="px-2 py-1 bg-red-500 text-white rounded"
+                            onClick={() => {
+                              setOpenDelete(true)
+                              setDeleteID(value.id)
+                            }}
+                          >
+                            Xóa
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
 
-              {/* Group: Done */}
               <tr>
                 <td
                   colSpan={7}
-                  className="bg-gray-50 p-2 font-semibold border border-gray-300"
+                  className="p-2 font-semibold cursor-pointer select-none"
+                  onClick={() => setOpenDone(!openDone)}
                 >
-                  ▼ Done
+                  <div className="flex items-center gap-2 w-full">
+                    {openDone ? (
+                      <RxTriangleDown size={20} />
+                    ) : (
+                      <RxTriangleRight size={20} />
+                    )}
+                    Done
+                  </div>
                 </td>
               </tr>
+              {openDone &&
+                arrTask?.map((value: any, index: any) => {
+                  if (value.status == "done") {
+                    const user = users.find(
+                      (i: any) => Number(i.id) == Number(value.assingeeId)
+                    );
+                    return (
+                      <tr className="even:bg-gray-50" key={index}>
+                        <td className="p-2 border border-gray-300">
+                          {value.taskName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {user?.fullName}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.priority}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.assgnDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          {value.dueDate}
+                        </td>
+                        <td className="p-2 border border-gray-300">
+                          <span className="px-2 py-1 bg-green-100 text-green-600 rounded-lg text-xs">
+                            {value.progress}
+                          </span>
+                        </td>
+                        <td className="p-2 border border-gray-300 flex gap-2">
+                          <button
+                            className="px-2 py-1 bg-yellow-400 text-white rounded"
+                            onClick={() => {
+                              setOpenAddTask(true)
+                              setEdit(value)
+                            }}
+                          >
+                            Sửa
+                          </button>
+                          <button
+                            className="px-2 py-1 bg-red-500 text-white rounded"
+                            onClick={() => {
+                              setOpenDelete(true)
+                              setDeleteID(value.id)
+                            }}
+                          >
+                            Xóa
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  }
+                })}
             </tbody>
           </table>
         </div>
@@ -254,6 +463,7 @@ export default function ProjectDetail() {
         isOpen={openAddTask}
         onClose={() => setOpenAddTask(false)}
         project={projectDetail}
+        edit={edit}
       ></AddAndEditDetails>
       <AddMember
         isOpen={openMember}
@@ -267,6 +477,7 @@ export default function ProjectDetail() {
       <DeleteDetails
         isOpen={openDelete}
         onClose={() => setOpenDelete(false)}
+        id={deleteID}
       ></DeleteDetails>
     </div>
   );

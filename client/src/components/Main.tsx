@@ -5,6 +5,7 @@ import LogIn from "../pages/LogIn";
 import Manager from "./Manager";
 import ProjectManagement from "../pages/ProjectManagement";
 import ProjectDetail from "../pages/ProjectDetails";
+import PersonalMission from "../pages/PersonalMission";
 
 export default function Main() {
   const routers = createBrowserRouter([
@@ -27,6 +28,10 @@ export default function Main() {
         {
           path: ":projectId",
           element: <ProjectDetail />,
+        },
+        {
+          path: "person",
+          element: <PersonalMission />,
         },
       ],
     },
