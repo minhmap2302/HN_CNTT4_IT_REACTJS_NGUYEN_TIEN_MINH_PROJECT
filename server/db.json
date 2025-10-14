@@ -1,163 +1,83 @@
 {
   "user": [
     {
-      "id": 1759997903905,
-      "fullName": "Dương Đức Lộc ",
-      "email": "axyz09527@gmail.com",
-      "password": "12345678"
-    },
-    {
-      "id": 1759997986489,
-      "fullName": "duong",
-      "email": "a@gmail.com",
-      "password": "12345678"
-    },
-    {
-      "id": 1759998074393,
-      "fullName": "v",
-      "email": "v@gmail.com",
-      "password": "12345678"
-    },
-    {
-      "id": 1759998093561,
-      "fullName": "b",
-      "email": "b@gmail.com",
-      "password": "12345678"
-    },
-    {
-      "id": 1760284711279,
-      "fullName": "Dương Đức Lộc ",
-      "email": "c@gmail.com",
-      "password": "12345678"
-    },
-    {
-      "id": 1760406602069,
+      "id": 1,
       "fullName": "Nguyễn Tiến Minh",
       "email": "nguyentienminh.230206@gmail.com",
+      "password": "12345678"
+    },
+    {
+      "id": 1760424033441,
+      "fullName": "Nguyễn Thị Phương",
+      "email": "nguyenthiphuong@gmail.com",
       "password": "12345678"
     }
   ],
   "task": [
     {
-      "taskName": "a",
-      "assingeeId": 1759997986489,
-      "projectId": 1,
-      "assgnDate": "2025-10-16",
-      "dueDate": "2025-10-07",
+      "id": 1,
+      "taskName": "adsdasd",
+      "assingeeId": 1,
+      "projectId": 3,
+      "assgnDate": "2025-10-10",
+      "dueDate": "2025-10-24",
       "priority": "thấp",
-      "progress": "đúng tiến độ",
-      "status": "todo",
-      "id": 2
-    },
-    {
-      "taskName": "q",
-      "assingeeId": 1759998074393,
-      "projectId": 1,
-      "assgnDate": "2025-10-12",
-      "dueDate": "2025-10-18",
-      "priority": "thấp",
-      "progress": "có rủi ro",
-      "status": "inprogress",
-      "id": 3
-    },
-    {
-      "id": 4,
-      "taskName": "a2",
-      "assingeeId": 1759998093561,
-      "projectId": 2,
-      "assgnDate": "2025-10-16",
-      "dueDate": "2025-10-17",
-      "priority": "trung bình",
-      "progress": "đúng tiến độ",
+      "progress": "chậm tiến độ",
       "status": "inprogress"
     }
   ],
   "project": [
     {
-      "id": 2,
-      "idUser": 1759997903905,
-      "projectName": "ưwww",
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760188093/vswbymbcm9iz621jq7br.png",
-      "note": "",
+      "projectName": "hehehehehheheheheheheheheashd",
+      "idUser": 1,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760422165/xrqhdm0vf6e5waw95tr9.jpg",
+      "note": "ạbfasfnasdn f,.ád",
       "members": [
         {
-          "userId": 1759997986489,
-          "role": "member"
+          "userId": 1760424033441,
+          "role": "a"
         },
         {
-          "userId": 1759998093561,
-          "role": "quan li"
+          "userId": 1,
+          "role": "z"
         }
-      ]
+      ],
+      "id": 1
     },
     {
-      "projectName": "r",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760188116/evce8raojmrymvevyof1.png",
-      "note": "",
-      "members": [],
-      "id": 4
-    },
-    {
-      "projectName": "y",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760275410/zuzwfbmpoueycnevhbpz.png",
-      "note": "",
-      "members": [],
-      "id": 6
-    },
-    {
-      "projectName": "rr",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340366/gbddmrechuwh7jxtjj43.png",
-      "note": "",
-      "members": [],
-      "id": 7
-    },
-    {
-      "projectName": "rrr",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340462/w6rjurmx9yciqvv7uzum.png",
-      "note": "",
-      "members": [],
-      "id": 8
-    },
-    {
-      "projectName": "rrrr",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340472/fkzejuhvp3zq4oapu5nj.png",
-      "note": "",
-      "members": [],
-      "id": 9
-    },
-    {
-      "projectName": "rrrrr",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340481/qjfxn5kd0ymbvozd0h09.png",
-      "note": "",
-      "members": [],
-      "id": 10
-    },
-    {
-      "projectName": "rrrrrr",
-      "idUser": 1759997903905,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760340497/u73p8azyuwxnojktj7tx.png",
-      "note": "",
-      "members": [],
-      "id": 11
-    },
-    {
-      "projectName": "Xây dựng dự án ",
-      "idUser": 1760406602069,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760406626/kn4yemjvsdiomovfv45m.jpg",
-      "note": "hẹn em kiếp sau",
+      "projectName": "sdfgdgsfsdasfdghfds",
+      "idUser": 1,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760422204/f07rdwqfbg11vqygjnrv.jpg",
+      "note": "ỪESGRSFAFSD",
       "members": [
         {
-          "userId": 1760406602069,
+          "userId": 1,
+          "role": "manager"
+        },
+        {
+          "userId": 2,
           "role": "manager"
         }
       ],
-      "id": 12
+      "id": 2
+    },
+    {
+      "projectName": "heheheheheh",
+      "idUser": 1760424033441,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760424119/uczjwsoj77yfofmnjghw.jpg",
+      "note": "hehehehe",
+      "members": [
+        {
+          "userId": 1760424033441,
+          "role": "devolop"
+        },
+        {
+          "userId": 1,
+          "role": "manager"
+        }
+      ],
+      "id": 3
     }
-  ]
+  ],
+  "member": []
 }

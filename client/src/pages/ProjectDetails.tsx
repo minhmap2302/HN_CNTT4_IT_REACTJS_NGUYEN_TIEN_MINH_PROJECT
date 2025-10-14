@@ -69,7 +69,7 @@ export default function ProjectDetail() {
   console.log(edit);
   return (
     <div className="flex justify-center">
-      <div className="p-10 space-y-7">
+      <div className="p-15 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <h2 className="text-xl font-semibold mb-4">

@@ -19,7 +19,6 @@ export default function AddAndEditDetails({
   edit,
 }: PropsAddandEdit) {
   if (!isOpen) return null;
-  //
   if (edit != null) console.log("edit ben addAndEdit :", edit);
 
   const [nameTask, setNameTask] = useState("");
@@ -135,14 +134,14 @@ export default function AddAndEditDetails({
 
   return (
     <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-70">
-      <div className="bg-white w-[500px] max-h-[800px] overflow-y-auto rounded-lg shadow-lg p-5">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold mb-4">Thêm/Sửa nhiệm vụ</h2>
+      <div className="bg-white w-[600px] max-h-[800px] overflow-y-auto rounded-lg shadow-lg p-5">
+        <div className="flex justify-between items-center mb-1">
+          <h2 className="text-xl font-semibold mb-1">Thêm/Sửa nhiệm vụ</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-black">
             ✕
           </button>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3">
           <div>
             <label className="block mb-1 font-medium">Tên nhiệm vụ</label>
             <input
