@@ -29,6 +29,12 @@
       "fullName": "Dương Đức Lộc ",
       "email": "c@gmail.com",
       "password": "12345678"
+    },
+    {
+      "id": 1760406602069,
+      "fullName": "Nguyễn Tiến Minh",
+      "email": "nguyentienminh.230206@gmail.com",
+      "password": "12345678"
     }
   ],
   "task": [
@@ -139,6 +145,19 @@
       "note": "",
       "members": [],
       "id": 11
+    },
+    {
+      "projectName": "Xây dựng dự án ",
+      "idUser": 1760406602069,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760406626/kn4yemjvsdiomovfv45m.jpg",
+      "note": "hẹn em kiếp sau",
+      "members": [
+        {
+          "userId": 1760406602069,
+          "role": "manager"
+        }
+      ],
+      "id": 12
     }
   ]
 }

@@ -18,33 +18,31 @@ export default function AddAndEditProject({
   edit,
   id,
 }: AddAndEditProjectProps) {
-  if(!isOpen) return null;
+  if (!isOpen) return null;
   const [nameProject, setNameProject] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [note, setNote] = useState("");
   const [url, setUrl] = useState<string>("");
   const [errorName, setErrorName] = useState("");
-  const [errorImg , setErrorImg] = useState("");
-  const [errorNote , setErrorNote] = useState("");
+  const [errorImg, setErrorImg] = useState("");
+  const [errorNote, setErrorNote] = useState("");
   const dispatch: any = useDispatch();
 
+  const project = useSelector((data: any) => data.management.project);
+
   useEffect(() => {
-    if (edit && typeof edit === "object") {
+    if (edit) {
       setNameProject(edit.projectName || "");
       setUrl(edit.image || "");
       setNote(edit.note || "");
     } else {
-      setNameProject("");
-      setImage(null);
-      setNote("");
-      setUrl("");
+      resetForm();
     }
   }, [edit]);
 
   const handleInputImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setImage(file);
 
     const formData = new FormData();
@@ -62,6 +60,7 @@ export default function AddAndEditProject({
       console.error("Lỗi upload:", error);
     }
   };
+
   const resetForm = () => {
     setImage(null);
     setNameProject("");
@@ -69,33 +68,33 @@ export default function AddAndEditProject({
     setErrorImg("");
     setErrorName("");
     setUrl("");
-    
   };
-  const project = useSelector((data:any) =>{
-    return data.management.project;
-  })
-  const findProject = project.find((i:Project) => i.projectName === nameProject);
+
+  const findProject = project.find(
+    (i: Project) => i.projectName === nameProject
+  );
+
   const handleAddProject = () => {
     if (!nameProject || !url) {
       setErrorName("Không được để trống");
       setErrorImg("Không được để trống");
       return;
     }
-    if(nameProject.length > 30){
+    if (nameProject.length > 30) {
       setErrorName("Tên dự án chỉ được tối đa 30 kí tự");
       return;
     }
-    if(note.length>50){
+    if (note.length > 50) {
       setErrorNote("Mô tả dự án chỉ tối đa 50 kí tự");
       return;
     }
-    if(findProject != undefined && !edit){
+    if (findProject && !edit) {
       setErrorName("Dự án này đã tồn tại");
       return;
     }
 
     if (edit) {
-      //  Sửa dự án
+      // ✏️ Sửa dự án
       const editproject = {
         id: Number(edit.id),
         idUser: Number(edit.idUser),
@@ -116,15 +115,23 @@ export default function AddAndEditProject({
         onClose();
       });
     } else {
-      //  Thêm dự án
+      // ➕ Thêm mới và reset lại ID toàn bộ
       const newproject = {
         projectName: nameProject,
-        idUser: id != undefined ? Number(id) : "",
+        idUser: id ? Number(id) : "",
         image: url,
         note: note,
         members: [],
       };
-      dispatch(addProject(newproject));
+
+      // Thêm dự án vào danh sách và reset ID
+      const updatedList = [...project, newproject].map((item, index) => ({
+        ...item,
+        id: index + 1,
+      }));
+
+      dispatch({ type: "management/setProjects", payload: updatedList });
+
       Swal.fire({
         position: "top",
         icon: "success",
@@ -139,10 +146,7 @@ export default function AddAndEditProject({
   };
 
   return (
-    //  Không return null nữa — luôn render nhưng ẩn/hiện bằng CSS
-    <div
-      className="fixed inset-0 bg-black/30 flex justify-center items-center z-50"
-    >
+    <div className="fixed inset-0 bg-black/30 flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-md rounded shadow-lg p-6 relative animate-fade-in">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">
@@ -160,34 +164,36 @@ export default function AddAndEditProject({
         </div>
 
         <div className="space-y-4">
-          {/* Tên dự án */}
           <div>
             <label className="block text-sm font-medium mb-1">Tên dự án</label>
             <input
               type="text"
               placeholder="Nhập tên dự án"
-              className={`w-full border rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
+              className={`w-full border rounded px-3 py-2 ${
                 errorName ? "border-red-500" : "border-gray-300"
-              }`}
+              } focus:outline-none focus:ring focus:ring-blue-300`}
               value={nameProject}
               onChange={(e) => setNameProject(e.target.value)}
             />
-            {errorName && <p className="text-red-500 text-sm mt-1">{errorName}</p>}
+            {errorName && (
+              <p className="text-red-500 text-sm mt-1">{errorName}</p>
+            )}
           </div>
 
-          {/* Hình ảnh */}
           <div>
             <label className="block text-sm font-medium mb-1">
               Hình ảnh dự án
             </label>
             <input
               type="file"
-              className={`w-full border border-gray-300 rounded px-3 py-2 ${
+              className={`w-full border rounded px-3 py-2 ${
                 errorImg ? "border-red-500" : "border-gray-300"
               }`}
               onChange={handleInputImage}
             />
-            {errorImg && <p className="text-red-500 text-sm mt-1">{errorImg}</p>}
+            {errorImg && (
+              <p className="text-red-500 text-sm mt-1">{errorImg}</p>
+            )}
             {url && (
               <div className="mt-2 w-32">
                 <img
@@ -206,17 +212,18 @@ export default function AddAndEditProject({
             <textarea
               rows={3}
               placeholder="Nhập mô tả dự án"
-              className={`w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300 ${
+              className={`w-full border rounded px-3 py-2 ${
                 errorNote ? "border-red-500" : "border-gray-300"
-              }`}
+              } focus:outline-none focus:ring focus:ring-blue-300`}
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
           </div>
-          {errorNote && <p className="text-red-500 text-sm mt-1">{errorNote}</p>}
+          {errorNote && (
+            <p className="text-red-500 text-sm mt-1">{errorNote}</p>
+          )}
         </div>
 
-        {/* Nút hành động */}
         <div className="flex justify-end space-x-2 mt-6">
           <button
             onClick={() => {
