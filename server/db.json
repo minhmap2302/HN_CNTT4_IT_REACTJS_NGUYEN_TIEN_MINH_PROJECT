@@ -28,40 +28,6 @@
   ],
   "project": [
     {
-      "projectName": "hehehehehheheheheheheheheashd",
-      "idUser": 1,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760422165/xrqhdm0vf6e5waw95tr9.jpg",
-      "note": "ạbfasfnasdn f,.ád",
-      "members": [
-        {
-          "userId": 1760424033441,
-          "role": "a"
-        },
-        {
-          "userId": 1,
-          "role": "z"
-        }
-      ],
-      "id": 1
-    },
-    {
-      "projectName": "sdfgdgsfsdasfdghfds",
-      "idUser": 1,
-      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760422204/f07rdwqfbg11vqygjnrv.jpg",
-      "note": "ỪESGRSFAFSD",
-      "members": [
-        {
-          "userId": 1,
-          "role": "manager"
-        },
-        {
-          "userId": 2,
-          "role": "manager"
-        }
-      ],
-      "id": 2
-    },
-    {
       "projectName": "heheheheheh",
       "idUser": 1760424033441,
       "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760424119/uczjwsoj77yfofmnjghw.jpg",
@@ -77,6 +43,19 @@
         }
       ],
       "id": 3
+    },
+    {
+      "projectName": "Xây dựng wedsite F88",
+      "idUser": 1,
+      "image": "https://res.cloudinary.com/di8bnnkmd/image/upload/v1760501271/dweejybwc5wr9enjpgff.png",
+      "note": "wedside đẳng cấp nhất server\n",
+      "members": [
+        {
+          "userId": 1,
+          "role": "develo"
+        }
+      ],
+      "id": 4
     }
   ],
   "member": []

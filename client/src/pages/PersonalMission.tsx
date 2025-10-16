@@ -56,7 +56,7 @@ export default function PersonalMission() {
         </div>
       </div>
       <div className="bg-white shadow-lg rounded-2xl p-5 overflow-y-auto mx-[15%]">
-        <h3 className="text-lg font-semibold mb-4">📋 Danh Sách Nhiệm Vụ</h3>
+        <h3 className="text-lg font-semibold mb-4">Danh Sách Nhiệm Vụ</h3>
 
         <table className="w-full text-sm border border-gray-200 border-collapse rounded-lg overflow-hidden shadow-sm">
           <thead>
